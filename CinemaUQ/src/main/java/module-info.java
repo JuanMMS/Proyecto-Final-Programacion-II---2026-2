@@ -1,8 +1,8 @@
-module uniquindio.cinemauq {
+module java {
     requires javafx.controls;
     requires javafx.fxml;
 
 
-    opens uniquindio.cinemauq to javafx.fxml;
-    exports uniquindio.cinemauq;
+    opens model to javafx.fxml;
+    exports model;
 }
