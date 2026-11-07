@@ -1,11 +1,13 @@
 package model;
 
+import fachada.Fachada;
+
 import java.util.ArrayList;
 
 /**
  * Clase de cuenta de cada cliente
  */
-public class Cuenta {
+public class Cuenta implements Fachada {
     //Atributos
     private String id;
     private String usuario;
@@ -30,5 +32,10 @@ public class Cuenta {
         this.puntos = puntos;
         this.theTarjetaVirtualCliente = tarjetaVirtual;
         this.listCuentaPuntos = new ArrayList<>();
+    }
+
+    @Override
+    public void hacerCompra() {
+
     }
 }
