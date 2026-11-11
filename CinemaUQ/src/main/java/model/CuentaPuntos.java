@@ -23,4 +23,37 @@ public class CuentaPuntos {
         this.fechaVencimiento = fechaObtencion.plusYears(1);
         this.theCuentaCuentaPuntos = theCuentaCuentaPuntos;
     }
+
+    //Getters y setters
+    public int getPuntos() {
+        return puntos;
+    }
+
+    public void setPuntos(int puntos) {
+        this.puntos = puntos;
+    }
+
+    public LocalDate getFechaObtencion() {
+        return fechaObtencion;
+    }
+
+    public void setFechaObtencion(LocalDate fechaObtencion) {
+        this.fechaObtencion = fechaObtencion;
+    }
+
+    public LocalDate getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(LocalDate fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
+    public Cuenta getTheCuentaCuentaPuntos() {
+        return theCuentaCuentaPuntos;
+    }
+
+    public void setTheCuentaCuentaPuntos(Cuenta theCuentaCuentaPuntos) {
+        this.theCuentaCuentaPuntos = theCuentaCuentaPuntos;
+    }
 }

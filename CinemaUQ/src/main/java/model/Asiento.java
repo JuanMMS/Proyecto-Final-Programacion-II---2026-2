@@ -5,6 +5,12 @@ public class Asiento {
     private boolean disponible;
     private SalaCine theSalaCine;
 
+    /**
+     * Constructor basico de la clase
+     * @param idAsiento id del asiento
+     * @param disponible estado del asiento
+     * @param theSalaCine sala a la que pertenece el asiento
+     */
     Asiento(String idAsiento, boolean disponible, SalaCine theSalaCine) {
         this.idAsiento = idAsiento;
         this.disponible = disponible;

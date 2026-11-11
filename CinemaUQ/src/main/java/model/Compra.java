@@ -25,10 +25,14 @@ public class Compra implements Fachada {
     }
 
 
+    /**
+     * Funcion del patron fachada
+     */
     public void hacerCompra() {
 
     }
 
+    //Getters y setters
     public String getId() {
         return id;
     }
