@@ -17,4 +17,30 @@ public class TarjetaVirtual {
         this.saldo = saldo;
         this.theCuentaTarjetaVirtual = theCuentaTarjetaVirtual;
     }
+
+    //Getters y setters
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public Cuenta getTheCuentaTarjetaVirtual() {
+        return theCuentaTarjetaVirtual;
+    }
+
+    public void setTheCuentaTarjetaVirtual(Cuenta theCuentaTarjetaVirtual) {
+        this.theCuentaTarjetaVirtual = theCuentaTarjetaVirtual;
+    }
 }
