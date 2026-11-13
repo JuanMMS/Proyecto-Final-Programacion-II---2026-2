@@ -1,6 +1,7 @@
 
 package iterator;
 
+import model.Cine;
 import model.Pelicula;
 
 import java.util.ArrayList;
@@ -8,12 +9,30 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Clase para agrupar las peliculas disponibles. Utiliza Iterator.
+ * Clase para agrupar las peliculas disponibles. Utiliza Iterator y Singleton
  */
 public class Cartelera implements Iterable<Pelicula> {
+    // Instancia unica
+    private static Cartelera instancia;
 
     // Lista para las peliculas
-    private ArrayList<Pelicula> listPeliculas = new ArrayList<>();
+    private ArrayList<Pelicula> listPeliculas;
+
+    //Constructor privado para el singleton
+    private Cartelera() {
+        listPeliculas = new ArrayList<>();
+    }
+
+    /**
+     * Funcion para obtener una instancia unica de la cartelera
+     * @return instantica unica de la cartelera
+     */
+    public static Cartelera getInstancia() {
+        if (instancia == null) {
+            instancia = new Cartelera();
+        }
+        return instancia;
+    }
 
     /**
      * Funcion para agregar nuevas peliculas a la lista.
