@@ -1,11 +1,15 @@
+
 package model;
 
-import java.io.Serializable;
-//ANOTACIÓN: HACE FALTA IMPLEMENTAR EL PATRON DECORADOR
-public class Palomita extends Confiteria {
+import decorator.ComplementoPalomita;
+
+/**
+ * Clase para la confiteria de palomitas
+ */
+public class Palomita extends Confiteria implements ComplementoPalomita {
+    //Constructor
     public Palomita(String nombre, double precio) {
         super(nombre, precio);
     }
-    //TERMINAR!!!!!!!
 
 }
