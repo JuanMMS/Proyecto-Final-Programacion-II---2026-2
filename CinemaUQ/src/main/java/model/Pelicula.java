@@ -9,11 +9,18 @@ public class Pelicula {
     private String director;
     private List<FuncionPelicula> listFuncionesPelicula;
 
-    Pelicula(String idPelicula, String nombre, String director) {
+    public Pelicula(String idPelicula, String nombre, String director) {
         this.idPelicula = idPelicula;
         this.nombre = nombre;
         this.director = director;
-        this.listFuncionesPelicula = new ArrayList<FuncionPelicula>();
+        this.listFuncionesPelicula = new ArrayList<>();
+    }
+
+    // Método seguro para agregar funciones a esta película
+    public void agregarFuncion(FuncionPelicula funcion) {
+        if (funcion != null && !listFuncionesPelicula.contains(funcion)) {
+            listFuncionesPelicula.add(funcion);
+        }
     }
 
     public String getIdPelicula() {
@@ -46,5 +53,10 @@ public class Pelicula {
 
     public void setListFuncionesPelicula(List<FuncionPelicula> listFuncionesPelicula) {
         this.listFuncionesPelicula = listFuncionesPelicula;
+    }
+
+    @Override
+    public String toString() {
+        return nombre + " (Dir: " + director + ")";
     }
 }
