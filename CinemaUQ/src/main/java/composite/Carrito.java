@@ -18,7 +18,7 @@ public class Carrito implements Elemento {
     public double obtenerPrecioFinal() {
         double contador = 0;
         for (Elemento elemento : elementoList) {
-            elemento.getPrecio() += contador;
+            contador += elemento.getPrecio();
         }
             return contador;
     }
