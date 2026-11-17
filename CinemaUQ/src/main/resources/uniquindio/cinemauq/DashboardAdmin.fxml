@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardAdminController">
+
+    <!-- MENÚ LATERAL (SIDEBAR) -->
+    <left>
+        <VBox spacing="10.0" prefWidth="250.0" style="-fx-background-color: #14141d; -fx-padding: 20;">
+            <!-- Logo -->
+            <ImageView fitHeight="60.0" fitWidth="180.0" preserveRatio="true" style="-fx-cursor: hand;">
+                <image>
+                    <Image url="@images/logo_cinemauq.png" />
+                </image>
+                <VBox.margin>
+                    <Insets bottom="30.0" />
+                </VBox.margin>
+            </ImageView>
+
+            <!-- Botones de navegación -->
+            <Button text="📊 Overview" maxWidth="Infinity" alignment="BASELINE_LEFT" styleClass="button-primary"/>
+            <Button text="🎬 Películas y Funciones" maxWidth="Infinity" alignment="BASELINE_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8; -fx-padding: 10 20;"/>
+            <Button text="🚪 Salas y Asientos" maxWidth="Infinity" alignment="BASELINE_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8; -fx-padding: 10 20;"/>
+            <Button text="🍿 Confitería" maxWidth="Infinity" alignment="BASELINE_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8; -fx-padding: 10 20;"/>
+            <Button text="📄 Reportes PDF/TXT" maxWidth="Infinity" alignment="BASELINE_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8; -fx-padding: 10 20;"/>
+
+            <Region VBox.vgrow="ALWAYS" />
+
+            <!-- Botón de salir -->
+            <Button text="Cerrar Sesión" maxWidth="Infinity" style="-fx-background-color: #2a2a35; -fx-text-fill: white;" onAction="#handleCerrarSesion"/>
+        </VBox>
+    </left>
+
+    <!-- ÁREA PRINCIPAL -->
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background: #0d0d12; -fx-background-color: transparent;">
+            <VBox spacing="25.0" style="-fx-padding: 30;">
+
+                <!-- Encabezado del Dashboard -->
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Dashboard Overview" styleClass="title-text"/>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lblAdminName" text="Admin: Juan Manuel" styleClass="subtitle-text" style="-fx-background-color: #1a1a24; -fx-padding: 8 15; -fx-background-radius: 20;"/>
+                </HBox>
+
+                <!-- TARJETAS DE INDICADORES (KPIs) -->
+                <HBox spacing="20.0">
+                    <!-- KPI 1 -->
+                    <VBox styleClass="dashboard-card" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
+                        <Label text="Entradas Vendidas" styleClass="kpi-title"/>
+                        <Label fx:id="lblTotalEntradas" text="1,245" styleClass="kpi-value"/>
+                        <Label text="+12% esta semana" style="-fx-text-fill: #4caf50; -fx-font-size: 12px;"/>
+                    </VBox>
+                    <!-- KPI 2 -->
+                    <VBox styleClass="dashboard-card" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
+                        <Label text="Ingresos Totales" styleClass="kpi-title"/>
+                        <Label fx:id="lblTotalIngresos" text="\$4,560,000" styleClass="kpi-value" style="-fx-text-fill: #f5b041;"/>
+                        <Label text="Generados por tarjeta virtual" styleClass="subtitle-text" style="-fx-font-size: 12px;"/>
+                    </VBox>
+                    <!-- KPI 3 -->
+                    <VBox styleClass="dashboard-card" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
+                        <Label text="Ocupación Promedio" styleClass="kpi-title"/>
+                        <Label fx:id="lblOcupacion" text="72%" styleClass="kpi-value"/>
+                        <Label text="En todas las salas" styleClass="subtitle-text" style="-fx-font-size: 12px;"/>
+                    </VBox>
+                    <!-- KPI 4 -->
+                    <VBox styleClass="dashboard-card" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
+                        <Label text="Reembolsos (24h)" styleClass="kpi-title"/>
+                        <Label fx:id="lblReembolsos" text="18" styleClass="kpi-value" style="-fx-text-fill: #f44336;"/>
+                        <Label text="Operaciones canceladas" styleClass="subtitle-text" style="-fx-font-size: 12px;"/>
+                    </VBox>
+                </HBox>
+
+                <!-- FILA DE GRÁFICOS 1: BARRAS Y PASTEL -->
+                <HBox spacing="20.0">
+                    <!-- Gráfico de Barras -->
+                    <VBox styleClass="dashboard-card" HBox.hgrow="ALWAYS" prefWidth="400.0">
+                        <Label text="Ventas por Película (Top 5)" styleClass="subtitle-text" style="-fx-font-weight: bold; -fx-padding: 0 0 10 0;"/>
+                        <BarChart fx:id="barChartPeliculas" legendVisible="false" minHeight="250.0">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT" />
+                            </yAxis>
+                        </BarChart>
+                    </VBox>
+
+                    <!-- Gráfico de Pastel -->
+                    <VBox styleClass="dashboard-card" prefWidth="300.0">
+                        <Label text="Distribución de Ventas" styleClass="subtitle-text" style="-fx-font-weight: bold; -fx-padding: 0 0 10 0;"/>
+                        <PieChart fx:id="pieChartVentas" legendSide="BOTTOM" minHeight="250.0" />
+                    </VBox>
+                </HBox>
+
+                <!-- FILA DE GRÁFICOS 2: LÍNEAS -->
+                <HBox spacing="20.0">
+                    <VBox styleClass="dashboard-card" HBox.hgrow="ALWAYS">
+                        <Label text="Comportamiento de Recargas y Ventas (Últimos 7 días)" styleClass="subtitle-text" style="-fx-font-weight: bold; -fx-padding: 0 0 10 0;"/>
+                        <LineChart fx:id="lineChartTendencias" minHeight="250.0">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT" />
+                            </yAxis>
+                        </LineChart>
+                    </VBox>
+                </HBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>
