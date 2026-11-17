@@ -1,44 +1,40 @@
 package model;
 
+import java.util.Objects;
+
 public class Asiento {
-    private String idAsiento;
-    private boolean disponible;
+    private String idAsiento; // Ej: "A1", "D7"
     private SalaCine theSalaCine;
 
-    /**
-     * Constructor basico de la clase
-     * @param idAsiento id del asiento
-     * @param disponible estado del asiento
-     * @param theSalaCine sala a la que pertenece el asiento
-     */
-    Asiento(String idAsiento, boolean disponible, SalaCine theSalaCine) {
+    public Asiento(String idAsiento, SalaCine theSalaCine) {
         this.idAsiento = idAsiento;
-        this.disponible = disponible;
         this.theSalaCine = theSalaCine;
     }
 
+    public String getIdAsiento() { return idAsiento; }
+    public void setIdAsiento(String idAsiento) { this.idAsiento = idAsiento; }
+    public SalaCine getTheSalaCine() { return theSalaCine; }
+    public void setTheSalaCine(SalaCine theSalaCine) { this.theSalaCine = theSalaCine; }
 
-    public String getIdAsiento() {
-        return idAsiento;
+    // ==========================================
+    // MÉTODOS CRÍTICOS PARA VALIDAR ASIENTOS
+    // ==========================================
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Asiento asiento = (Asiento) o;
+        // Dos asientos son el mismo si tienen el mismo ID y pertenecen a la misma Sala
+        return Objects.equals(idAsiento, asiento.idAsiento) &&
+                Objects.equals(theSalaCine, asiento.theSalaCine);
     }
 
-    public void setIdAsiento(String idAsiento) {
-        this.idAsiento = idAsiento;
+    @Override
+    public int hashCode() {
+        return Objects.hash(idAsiento, theSalaCine);
     }
 
-    public boolean isDisponible() {
-        return disponible;
-    }
-
-    public void setDisponible(boolean disponible) {
-        this.disponible = disponible;
-    }
-
-    public SalaCine getTheSalaCine() {
-        return theSalaCine;
-    }
-
-    public void setTheSalaCine(SalaCine theSalaCine) {
-        this.theSalaCine = theSalaCine;
-    }
+    @Override
+    public String toString() { return idAsiento; }
 }
