@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Composite: contiene productos (hojas) y otros carritos (composites).
+ - Composite: contiene productos (hojas) y otros carritos (composites).
  */
 public class Carrito implements Elemento {
     private final String id;
