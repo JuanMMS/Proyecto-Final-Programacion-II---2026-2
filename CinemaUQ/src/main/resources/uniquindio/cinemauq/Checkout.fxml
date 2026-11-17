@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CheckoutController">
+<BorderPane stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewcontroller.CheckoutViewController">
 
     <top>
         <HBox alignment="CENTER_LEFT" style="-fx-background-color: #14141d; -fx-padding: 20 30;">
