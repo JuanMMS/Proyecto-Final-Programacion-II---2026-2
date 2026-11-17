@@ -1,7 +1,7 @@
 package decorator;
 
 import java.util.Objects;
-
+//Java
 /** Decorador base: envuelve otra palomita y añade descripción y costo. */
 public abstract class Complemento implements ComplementoPalomita {
     protected final ComplementoPalomita palomita;
