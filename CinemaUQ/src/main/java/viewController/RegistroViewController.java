@@ -1,3 +1,4 @@
+
 package viewController;
 
 import javafx.event.ActionEvent;
@@ -7,6 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import navegacion.Navegador;
+import service.RegistroService;
 
 public class RegistroViewController {
 
@@ -19,18 +23,80 @@ public class RegistroViewController {
     @FXML private Button btnRegistrar;
     @FXML private Hyperlink linkLogin;
 
+    private final RegistroService registroService =
+            new RegistroService();
+
     @FXML
     void handleRegistrar(ActionEvent event) {
-        // Llamar a RegistroController para crear Cliente, Cuenta, Tarjeta y Puntos
-        mostrarAlerta(Alert.AlertType.INFORMATION, "Registro", "Registrando usuario...");
+
+        try {
+            String nombre = txtNombreCompleto.getText().trim();
+            String documento = txtDocumento.getText().trim();
+            String correo = txtEmail.getText().trim();
+            String usuario = txtUsuario.getText().trim();
+            String contrasenia = txtContrasenia.getText();
+
+            int edad = Integer.parseInt(txtEdad.getText().trim());
+
+            registroService.registrarCliente(
+                    nombre,
+                    documento,
+                    edad,
+                    correo,
+                    usuario,
+                    contrasenia
+            );
+
+            mostrarAlerta(
+                    Alert.AlertType.INFORMATION,
+                    "Registro exitoso",
+                    "Tu cuenta fue creada correctamente. "
+                            + "Ahora puedes iniciar sesión."
+            );
+
+            navegarALogin();
+
+        } catch (NumberFormatException e) {
+            mostrarAlerta(
+                    Alert.AlertType.ERROR,
+                    "Dato inválido",
+                    "La edad debe ser un número entero."
+            );
+
+        } catch (IllegalArgumentException e) {
+            mostrarAlerta(
+                    Alert.AlertType.WARNING,
+                    "No se pudo registrar",
+                    e.getMessage()
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            mostrarAlerta(
+                    Alert.AlertType.ERROR,
+                    "Error",
+                    "Ocurrió un error al registrar el usuario."
+            );
+        }
     }
 
     @FXML
     void handleIrALogin(ActionEvent event) {
-        // Cambiar de escena al Login
+        navegarALogin();
     }
 
-    private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
+    private void navegarALogin() {
+        Stage stage = (Stage) linkLogin.getScene().getWindow();
+        Navegador navegador = new Navegador(stage);
+        navegador.navegar("Login.fxml");
+    }
+
+    private void mostrarAlerta(
+            Alert.AlertType tipo,
+            String titulo,
+            String mensaje) {
+
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
         alert.setHeaderText(null);

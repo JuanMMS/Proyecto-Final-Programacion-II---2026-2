@@ -34,4 +34,10 @@ module CinemaUQ {
 
     opens controller to javafx.fxml;
     exports controller;
+
+    opens navegacion to javafx.fxml;
+    exports navegacion;
+
+    opens service to javafx.fxml;
+    exports service;
 }

@@ -1,3 +1,4 @@
+
 package viewController;
 
 import javafx.event.ActionEvent;
@@ -9,7 +10,12 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+
+import model.Cliente;
+import model.Administrador;
 import navegacion.Navegador;
+import service.AutenticacionService;
+import service.Sesion;
 
 public class LoginViewController {
 
@@ -19,20 +25,51 @@ public class LoginViewController {
     @FXML private Button btnIniciarSesion;
     @FXML private Hyperlink linkRegistro;
 
+    private final AutenticacionService autenticacionService =
+            new AutenticacionService();
+
     @FXML
     void handleIniciarSesion(ActionEvent event) {
-        String usuario = txtUsuario.getText();
-        String contrasenia = txtContrasenia.getText();
-        // Llamar a LoginController (Lógica)
-        mostrarAlerta(Alert.AlertType.INFORMATION, "Login", "Intentando iniciar sesión con: " + usuario);
-    }
 
-    private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
-        Alert alert = new Alert(tipo);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
+        String usuario = txtUsuario.getText().trim();
+        String contrasenia = txtContrasenia.getText();
+
+        if (usuario.isBlank() || contrasenia.isBlank()) {
+            mostrarAlerta(
+                    Alert.AlertType.WARNING,
+                    "Campos vacíos",
+                    "Ingresa tu usuario y contraseña."
+            );
+            return;
+        }
+
+        Object usuarioAutenticado =
+                autenticacionService.autenticar(usuario, contrasenia);
+
+        if (usuarioAutenticado == null) {
+            mostrarAlerta(
+                    Alert.AlertType.ERROR,
+                    "Inicio de sesión fallido",
+                    "El usuario o la contraseña son incorrectos."
+            );
+            return;
+        }
+
+        // Guardar el usuario que inició sesión.
+        Sesion.getInstancia().iniciarSesion(usuarioAutenticado);
+
+        Stage stage = (Stage) btnIniciarSesion
+                .getScene()
+                .getWindow();
+
+        Navegador navegador = new Navegador(stage);
+
+        if (usuarioAutenticado instanceof Administrador) {
+            navegador.navegar("DashboardAdmin.fxml");
+
+        } else if (usuarioAutenticado instanceof Cliente) {
+            navegador.navegar("Cartelera.fxml");
+        }
     }
 
     @FXML
@@ -43,7 +80,18 @@ public class LoginViewController {
                 .getWindow();
 
         Navegador navegador = new Navegador(stage);
-
         navegador.navegar("Registro.fxml");
+    }
+
+    private void mostrarAlerta(
+            Alert.AlertType tipo,
+            String titulo,
+            String mensaje) {
+
+        Alert alert = new Alert(tipo);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }
