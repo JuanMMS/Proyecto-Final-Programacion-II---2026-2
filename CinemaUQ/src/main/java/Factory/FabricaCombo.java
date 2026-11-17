@@ -1,13 +1,12 @@
 package Factory;
 
+import decorator.ComplementoPalomita;
 import model.Chocolatina;
-import model.Confiteria;
 import model.Gasesosa;
-import model.Palomita;
 
+/** Abstract Factory: crea una familia de productos que conforman un combo. */
 public interface FabricaCombo {
-
     Gasesosa crearGasesosa();
-    Palomita crearPalomita();
+    ComplementoPalomita crearPalomita();
     Chocolatina crearChocolatina();
 }

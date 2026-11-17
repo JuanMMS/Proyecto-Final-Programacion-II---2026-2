@@ -1,86 +1,43 @@
-package Factory;
+package factory;
 
 import model.TipoChocolatina;
 import model.TipoGaseosa;
 
+/** Datos de entrada para construir un producto mediante Factory Method. */
 public class DatosConfiteria {
-    private String nombre;
-    private double precio;
+    private final String nombre;
+    private final double precio;
+    private final TipoChocolatina tipoChocolatina;
+    private final TipoGaseosa tipoGaseosa;
 
-
-    //Datos para chocolatina
-    private TipoChocolatina tipoChocolatina;
-
-    //Datos para gaseosa
-    private TipoGaseosa tipoGaseosa;
-
-    //Datos Palomita FALTA EL DECORADOR DE PALOMITA
-    //private DecoradorPalomita decoradorPalomita;
-
-
-    /**
-     * Metodo constructor con los datos necesarios para crear una confitería básica
-     * @param nombre
-     * @param precio
-     */
     public DatosConfiteria(String nombre, double precio) {
-        this.nombre = nombre;
-        this.precio = precio;
+        this(nombre, precio, null, null);
     }
 
-    /**
-     * Metodo constructor con los datos necesarios para crear una chocolatina
-     * @param nombre
-     * @param precio
-     * @param tipoChocolatina
-     */
     public DatosConfiteria(String nombre, double precio, TipoChocolatina tipoChocolatina) {
-        this.nombre = nombre;
-        this.precio = precio;
-        this.tipoChocolatina = tipoChocolatina;
+        this(nombre, precio, tipoChocolatina, null);
     }
 
-    /**
-     * Metodo constructor con los datos necesarios para crear una gaseosa
-     * @param nombre
-     * @param precio
-     * @param tipoGaseosa
-     */
     public DatosConfiteria(String nombre, double precio, TipoGaseosa tipoGaseosa) {
-        this.nombre = nombre;
+        this(nombre, precio, null, tipoGaseosa);
+    }
+
+    private DatosConfiteria(String nombre, double precio,
+                            TipoChocolatina tipoChocolatina, TipoGaseosa tipoGaseosa) {
+        if (nombre == null || nombre.isBlank()) {
+            throw new IllegalArgumentException("El nombre del producto es obligatorio.");
+        }
+        if (!Double.isFinite(precio) || precio < 0) {
+            throw new IllegalArgumentException("El precio debe ser positivo o cero.");
+        }
+        this.nombre = nombre.trim();
         this.precio = precio;
-        this.tipoGaseosa = tipoGaseosa;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    public TipoChocolatina getTipoChocolatina() {
-        return tipoChocolatina;
-    }
-
-    public void setTipoChocolatina(TipoChocolatina tipoChocolatina) {
         this.tipoChocolatina = tipoChocolatina;
-    }
-
-    public TipoGaseosa getTipoGaseosa() {
-        return tipoGaseosa;
-    }
-
-    public void setTipoGaseosa(TipoGaseosa tipoGaseosa) {
         this.tipoGaseosa = tipoGaseosa;
     }
+
+    public String getNombre() { return nombre; }
+    public double getPrecio() { return precio; }
+    public TipoChocolatina getTipoChocolatina() { return tipoChocolatina; }
+    public TipoGaseosa getTipoGaseosa() { return tipoGaseosa; }
 }

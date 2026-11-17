@@ -1,12 +1,8 @@
-package Factory;
+package factory;
 
 import model.Confiteria;
 
+/** Factory Method para crear productos concretos de confitería. */
 public abstract class ConfiteriaFactory {
-    //factory method
-    public abstract Confiteria crearConfiteria(DatosConfiteria datosConfiteria);
-
-//    public void crearconfiteria(String nombre, double precio) {
-  //      Confiteria confiteria = crearConfiteria();
-    //}
+    public abstract Confiteria crearConfiteria(factory.DatosConfiteria datosConfiteria);
 }

@@ -3,16 +3,12 @@ package Factory;
 import model.Confiteria;
 import model.Gasesosa;
 
-public class GaseosaFactory extends ConfiteriaFactory{
-
-
-    /**
-     * Metodo que permite crear una gaseosa utilizando información general como la especifica
-     * @param datosConfiteria
-     * @return
-     */
+public class GaseosaFactory extends factory.ConfiteriaFactory {
     @Override
-    public Confiteria crearConfiteria(DatosConfiteria datosConfiteria) { return new Gasesosa(datosConfiteria.getNombre(), datosConfiteria.getPrecio(), datosConfiteria.getTipoGaseosa());
+    public Confiteria crearConfiteria(factory.DatosConfiteria datos) {
+        if (datos == null || datos.getTipoGaseosa() == null) {
+            throw new IllegalArgumentException("Debe indicar los datos y el tipo de gaseosa.");
+        }
+        return new Gasesosa(datos.getNombre(), datos.getPrecio(), datos.getTipoGaseosa());
     }
 }
-
