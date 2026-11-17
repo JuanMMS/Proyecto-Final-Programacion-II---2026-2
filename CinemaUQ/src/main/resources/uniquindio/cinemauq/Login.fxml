@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewcontroller.LoginViewController">
+<StackPane stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewController.LoginViewController">
     <!-- Fondo decorativo opcional -->
     <VBox alignment="CENTER" spacing="20.0" maxWidth="400.0" maxHeight="500.0" style="-fx-background-color: #14141d; -fx-padding: 40; -fx-background-radius: 15;">
 
@@ -27,7 +27,7 @@
 
         <HBox alignment="CENTER" spacing="5.0">
             <Label text="¿No tienes cuenta?" styleClass="subtitle-text"/>
-            <Hyperlink text="Regístrate aquí" fx:id="linkRegistro" style="-fx-text-fill: #f5b041; -fx-underline: true;"/>
+            <Hyperlink text="Regístrate aquí" fx:id="linkRegistro" style="-fx-text-fill: #f5b041; -fx-underline: true;" onAction="#handleIrARegistro"/>
         </HBox>
     </VBox>
 </StackPane>

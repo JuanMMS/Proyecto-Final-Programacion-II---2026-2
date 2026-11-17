@@ -15,7 +15,7 @@
     </properties>
 
     <dependencies>
-        <!-- Controles y FXML base -->
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -27,21 +27,18 @@
             <version>17.0.6</version>
         </dependency>
 
-        <!-- Agregado: Soluciona los errores de import javafx.scene.image.* y gráficos -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>17.0.6</version>
         </dependency>
 
-        <!-- Agregado: Necesario para el TableView y el module-info.java -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
             <version>17.0.6</version>
         </dependency>
 
-        <!-- Pruebas Unitarias -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -73,11 +70,9 @@
                 <version>0.0.8</version>
                 <executions>
                     <execution>
-                        <!-- Ejecutar con: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <!-- CORREGIDO: Apunta a tu módulo y clase principal real -->
-                            <mainClass>CinemaUQ/App.Main</mainClass>
+                            <mainClass>CinemaUQ/app.Main</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

@@ -1,4 +1,4 @@
-package Factory;
+package factory;
 
 import decorator.ComplementoPalomita;
 import model.Chocolatina;
