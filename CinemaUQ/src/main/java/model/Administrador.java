@@ -1,6 +1,8 @@
 package model;
 
-public class Administrador {
+import service.Autenticable;
+
+public class Administrador implements Autenticable {
     //Atributos
     private String nombre;
     private String usuario;
@@ -11,6 +13,17 @@ public class Administrador {
         this.nombre = nombre;
         this.usuario = usuario;
         this.contrasenia = contrasenia;
+    }
+
+    //Implementacion de la interfaz
+    @Override
+    public String getNombreUsuario() {
+        return usuario;
+    }
+
+    @Override
+    public boolean verificarContrasenia(String contrasenia) {
+        return this.contrasenia.equals(contrasenia);
     }
 
     //Getters y setters

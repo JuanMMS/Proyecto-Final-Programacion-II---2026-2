@@ -8,6 +8,8 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+import navegacion.Navegador;
 
 public class LoginViewController {
 
@@ -31,5 +33,17 @@ public class LoginViewController {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+    @FXML
+    void handleIrARegistro(ActionEvent event) {
+
+        Stage stage = (Stage) linkRegistro
+                .getScene()
+                .getWindow();
+
+        Navegador navegador = new Navegador(stage);
+
+        navegador.navegar("Registro.fxml");
     }
 }

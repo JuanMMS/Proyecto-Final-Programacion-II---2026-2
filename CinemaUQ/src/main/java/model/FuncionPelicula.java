@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -33,5 +34,59 @@ public class FuncionPelicula {
         this.theSalaCine = theSalaCine;
         this.thePeliculaFuncion = thePeliculaFuncion;
         this.listCuentasSuscritas = new ArrayList<>();
+    }
+
+    /**
+     * @return fecha y hora en que inicia la funcion
+     */
+    public LocalDateTime getInicio() {
+        return LocalDateTime.of(fecha, hora);
+    }
+
+    //Getters y setters
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    public LocalTime getHora() {
+        return hora;
+    }
+
+    public void setHora(LocalTime hora) {
+        this.hora = hora;
+    }
+
+    public ArrayList<Entrada> getListEntradasFuncion() {
+        return listEntradasFuncion;
+    }
+
+    public SalaCine getTheSalaCine() {
+        return theSalaCine;
+    }
+
+    public Pelicula getThePeliculaFuncion() {
+        return thePeliculaFuncion;
+    }
+
+    public ArrayList<Cuenta> getListCuentasSuscritas() {
+        return listCuentasSuscritas;
+    }
+
+    @Override
+    public String toString() {
+        String pelicula = thePeliculaFuncion != null ? thePeliculaFuncion.getNombre() : "Sin pelicula";
+        return pelicula + " - " + fecha + " " + hora;
     }
 }
