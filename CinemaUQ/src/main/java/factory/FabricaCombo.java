@@ -1,7 +1,6 @@
-package Factory;
+package factory;
 
 import model.Chocolatina;
-import model.Confiteria;
 import model.Gasesosa;
 import model.Palomita;
 

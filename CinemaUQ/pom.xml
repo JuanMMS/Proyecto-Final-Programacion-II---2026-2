@@ -77,7 +77,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <!-- CORREGIDO: Apunta a tu módulo y clase principal real -->
-                            <mainClass>CinemaUQ/App.Main</mainClass>
+                            <mainClass>CinemaUQ/app.Main</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
