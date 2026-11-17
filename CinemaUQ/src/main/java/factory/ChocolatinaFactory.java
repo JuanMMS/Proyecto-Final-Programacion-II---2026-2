@@ -3,14 +3,12 @@ package factory;
 import model.Chocolatina;
 import model.Confiteria;
 
-public class ChocolatinaFactory extends ConfiteriaFactory {
-
-
-    /**
-     * Metodo que permite crear una chocolatina utilizanco la información general como la especifica para chocolatina
-     * @param datosConfiteria
-     * @return
-     */
+public class ChocolatinaFactory extends factory.ConfiteriaFactory {
     @Override
-    public Confiteria crearConfiteria(DatosConfiteria datosConfiteria) { return new Chocolatina(datosConfiteria.getNombre(), datosConfiteria.getPrecio(), datosConfiteria.getTipoChocolatina());}
+    public Confiteria crearConfiteria(factory.DatosConfiteria datos) {
+        if (datos == null || datos.getTipoChocolatina() == null) {
+            throw new IllegalArgumentException("Debe indicar los datos y el tipo de chocolatina.");
+        }
+        return new Chocolatina(datos.getNombre(), datos.getPrecio(), datos.getTipoChocolatina());
+    }
 }
