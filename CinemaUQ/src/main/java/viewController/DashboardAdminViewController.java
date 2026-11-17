@@ -1,4 +1,4 @@
-package ViewController;
+package viewController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

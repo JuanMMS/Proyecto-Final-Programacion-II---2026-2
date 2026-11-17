@@ -1,4 +1,4 @@
-package ViewController;
+package viewController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,27 +7,22 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 
-public class RegistroViewController {
+public class LoginViewController {
 
-    @FXML private TextField txtNombreCompleto;
-    @FXML private TextField txtDocumento;
-    @FXML private TextField txtEdad;
-    @FXML private TextField txtEmail;
+    @FXML private ImageView logoImageView;
     @FXML private TextField txtUsuario;
     @FXML private PasswordField txtContrasenia;
-    @FXML private Button btnRegistrar;
-    @FXML private Hyperlink linkLogin;
+    @FXML private Button btnIniciarSesion;
+    @FXML private Hyperlink linkRegistro;
 
     @FXML
-    void handleRegistrar(ActionEvent event) {
-        // Llamar a RegistroController para crear Cliente, Cuenta, Tarjeta y Puntos
-        mostrarAlerta(Alert.AlertType.INFORMATION, "Registro", "Registrando usuario...");
-    }
-
-    @FXML
-    void handleIrALogin(ActionEvent event) {
-        // Cambiar de escena al Login
+    void handleIniciarSesion(ActionEvent event) {
+        String usuario = txtUsuario.getText();
+        String contrasenia = txtContrasenia.getText();
+        // Llamar a LoginController (Lógica)
+        mostrarAlerta(Alert.AlertType.INFORMATION, "Login", "Intentando iniciar sesión con: " + usuario);
     }
 
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {

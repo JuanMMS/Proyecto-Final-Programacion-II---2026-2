@@ -4,21 +4,34 @@ module CinemaUQ {
     requires javafx.fxml;
     requires javafx.graphics;
     requires javafx.base;
-    opens ViewController to javafx.fxml;
 
-    opens model to javafx.base;
-    opens composite to javafx.base;
-    opens Factory to javafx.base;
-    opens decorator to javafx.base;
+    opens app to javafx.fxml;
+    exports app;
 
-    exports App;
-
-    exports ViewController;
-    exports model;
+    opens composite to javafx.fxml;
     exports composite;
+
+    opens decorator to javafx.fxml;
     exports decorator;
+
+    opens fachada to javafx.fxml;
     exports fachada;
-    exports Factory;
+
+    opens factory to javafx.fxml;
+    exports factory;
+
+    opens iterator to javafx.fxml;
     exports iterator;
+
+    opens model to javafx.fxml;
+    exports model;
+
+    opens proxy to javafx.fxml;
     exports proxy;
+
+    opens viewController to javafx.fxml;
+    exports viewController;
+
+    opens controller to javafx.fxml;
+    exports controller;
 }

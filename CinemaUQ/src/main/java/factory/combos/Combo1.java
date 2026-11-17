@@ -1,15 +1,12 @@
-package Factory.Combos;
+package factory.combos;
 
-import Factory.DatosConfiteria;
-import Factory.FabricaCombo;
-import decorator.Complemento;
+import factory.FabricaCombo;
 import decorator.ComplementoPalomita;
 import decorator.ConDulce;
 import model.Chocolatina;
 import model.Gasesosa;
 import model.Palomita;
 import model.TipoGaseosa;
-import model.Gasesosa;
 
 public class Combo1 implements FabricaCombo {
     @Override
