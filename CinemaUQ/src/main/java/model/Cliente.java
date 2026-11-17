@@ -1,8 +1,11 @@
 package model;
 
-/**
- * Clase para instanciar clientes
- */
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 public class Cliente {
     //Atributos
     private String nombreCompleto;
@@ -25,6 +28,37 @@ public class Cliente {
         this.email = email;
         this.edad = edad;
         this.cuenta = cuenta;
+    }
+    /**
+     * @return historial de compras del cliente, de la mas reciente a la mas antigua
+     */
+    public List<Compra> getHistorialCompras() {
+        List<Compra> historial = new ArrayList<>();
+        for (Compra compra : Cine.getInstancia().getListCompras()) {
+            if (compra.getCuenta() == cuenta) {
+                historial.add(compra);
+            }
+        }
+        historial.sort(Comparator.comparing(Compra::getFecha).thenComparing(Compra::getHora).reversed());
+        return historial;
+    }
+
+    /**
+     * @return puntos vigentes de la cuenta del cliente
+     */
+    public int getPuntosDisponibles() {
+        return CuentaPuntos.puntosDisponibles(cuenta, LocalDate.now());
+    }
+
+    /**
+     * Cancela una compra propia segun la politica de reembolso
+     * @return monto reembolsado
+     */
+    public double cancelarCompra(Compra compra) {
+        if (compra == null || compra.getCuenta() != cuenta) {
+            throw new IllegalArgumentException("La compra no pertenece a este cliente");
+        }
+        return compra.cancelar(LocalDateTime.now());
     }
 
     //Getters y setters
