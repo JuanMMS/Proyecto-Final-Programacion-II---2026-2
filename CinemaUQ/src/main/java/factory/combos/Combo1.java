@@ -1,32 +1,32 @@
 package factory.combos;
 
-import factory.FabricaCombo;
 import decorator.ComplementoPalomita;
 import decorator.ConDulce;
+import decorator.ConSal;
+import factory.FabricaCombo;
 import model.Chocolatina;
 import model.Gasesosa;
 import model.Palomita;
+import model.TipoChocolatina;
 import model.TipoGaseosa;
 
+/** Combo clásico: gaseosa, palomitas con sal y dulce, y chocolatina. */
 public class Combo1 implements FabricaCombo {
     @Override
     public Gasesosa crearGasesosa() {
-        //Crear gaseosa
-        Gasesosa gaseosa = new Gasesosa("PepsiCola", 4500, TipoGaseosa.PEPSI);
-        return gaseosa;
+        return new Gasesosa("Pepsi", 4500, TipoGaseosa.PEPSI);
     }
 
     @Override
-    public Palomita crearPalomita() {
-        //crear palomita de sal y caramelo
-        Palomita palomita = new Palomita("Palomitas pro max", 5000);
-        ComplementoPalomita dulce = new ConDulce(palomita);
-        ComplementoPalomita mixtas = new ConDulce(dulce);
-        return (Palomita) mixtas;
+    public ComplementoPalomita crearPalomita() {
+        ComplementoPalomita palomitas = new Palomita("Palomitas medianas", 5000);
+        palomitas = new ConSal(palomitas);
+        palomitas = new ConDulce(palomitas);
+        return palomitas;
     }
 
     @Override
     public Chocolatina crearChocolatina() {
-        return null;
+        return new Chocolatina("Chocolatina con leche", 3000, TipoChocolatina.CONLECHE);
     }
 }
