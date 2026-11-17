@@ -1,11 +1,9 @@
 package model;
 
-import service.Autenticable;
-
 /**
  * Clase para instanciar clientes
  */
-public class Cliente implements Autenticable {
+public class Cliente {
     //Atributos
     private String nombreCompleto;
     private String id;
@@ -27,17 +25,6 @@ public class Cliente implements Autenticable {
         this.email = email;
         this.edad = edad;
         this.cuenta = cuenta;
-    }
-
-    //Implementacion de la interfaz
-    @Override
-    public String getNombreUsuario() {
-        return cuenta.getUsuario();
-    }
-
-    @Override
-    public boolean verificarContrasenia(String contrasenia) {
-        return cuenta.getContrasenia().equals(contrasenia);
     }
 
     //Getters y setters
