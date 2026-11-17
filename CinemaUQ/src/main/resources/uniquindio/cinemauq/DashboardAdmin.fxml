@@ -10,28 +10,33 @@
 
     <!-- MENÚ LATERAL (SIDEBAR) -->
     <left>
-        <VBox spacing="10.0" prefWidth="250.0" style="-fx-background-color: #14141d; -fx-padding: 20;">
+        <VBox spacing="15.0" prefWidth="260.0" style="-fx-background-color: #14141d; -fx-padding: 20;">
             <!-- Logo -->
-            <ImageView fitHeight="60.0" fitWidth="180.0" preserveRatio="true" style="-fx-cursor: hand;">
+            <ImageView fitHeight="70.0" fitWidth="200.0" preserveRatio="true" style="-fx-cursor: hand;">
                 <image>
                     <Image url="@images/logo_cinemauq.png" />
                 </image>
                 <VBox.margin>
-                    <Insets bottom="30.0" />
+                    <Insets bottom="40.0" />
                 </VBox.margin>
             </ImageView>
 
-            <!-- Botones de navegación -->
-            <Button text="📊 Overview" maxWidth="Infinity" alignment="BASELINE_LEFT" styleClass="button-primary"/>
-            <Button text="🎬 Películas y Funciones" maxWidth="Infinity" alignment="BASELINE_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8; -fx-padding: 10 20;"/>
-            <Button text="🚪 Salas y Asientos" maxWidth="Infinity" alignment="BASELINE_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8; -fx-padding: 10 20;"/>
-            <Button text="🍿 Confitería" maxWidth="Infinity" alignment="BASELINE_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8; -fx-padding: 10 20;"/>
-            <Button text="📄 Reportes PDF/TXT" maxWidth="Infinity" alignment="BASELINE_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8; -fx-padding: 10 20;"/>
+            <!-- Botones de navegación (Corregidos) -->
+            <Button fx:id="btnOverview" text="📊 Overview" maxWidth="Infinity" alignment="BASELINE_LEFT" styleClass="button-primary" onAction="#handleNavOverview" style="-fx-padding: 12 20; -fx-font-size: 14px; -fx-cursor: hand;"/>
 
+            <Button fx:id="btnPeliculas" text="🎬 Películas y Funciones" maxWidth="Infinity" alignment="BASELINE_LEFT" onAction="#handleNavPeliculas" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8; -fx-padding: 12 20; -fx-font-size: 14px; -fx-cursor: hand;"/>
+
+            <Button fx:id="btnSalas" text="🚪 Salas y Asientos" maxWidth="Infinity" alignment="BASELINE_LEFT" onAction="#handleNavSalas" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8; -fx-padding: 12 20; -fx-font-size: 14px; -fx-cursor: hand;"/>
+
+            <Button fx:id="btnConfiteria" text="🍿 Confitería" maxWidth="Infinity" alignment="BASELINE_LEFT" onAction="#handleNavConfiteria" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8; -fx-padding: 12 20; -fx-font-size: 14px; -fx-cursor: hand;"/>
+
+            <Button fx:id="btnReportes" text="📄 Reportes PDF/TXT" maxWidth="Infinity" alignment="BASELINE_LEFT" onAction="#handleNavReportes" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8; -fx-padding: 12 20; -fx-font-size: 14px; -fx-cursor: hand;"/>
+
+            <!-- Espaciador para mandar el botón de salir abajo -->
             <Region VBox.vgrow="ALWAYS" />
 
             <!-- Botón de salir -->
-            <Button text="Cerrar Sesión" maxWidth="Infinity" style="-fx-background-color: #2a2a35; -fx-text-fill: white;" onAction="#handleCerrarSesion"/>
+            <Button fx:id="btnCerrarSesion" text="Cerrar Sesión" maxWidth="Infinity" style="-fx-background-color: #2a2a35; -fx-text-fill: white; -fx-padding: 10; -fx-cursor: hand; -fx-font-weight: bold;" onAction="#handleCerrarSesion"/>
         </VBox>
     </left>
 
