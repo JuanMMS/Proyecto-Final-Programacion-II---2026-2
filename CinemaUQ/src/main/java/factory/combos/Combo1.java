@@ -1,9 +1,9 @@
-package Factory.combos;
+package factory.combos;
 
 import decorator.ComplementoPalomita;
 import decorator.ConDulce;
 import decorator.ConSal;
-import Factory.FabricaCombo;
+import factory.FabricaCombo;
 import model.Chocolatina;
 import model.Gasesosa;
 import model.Palomita;
