@@ -2,91 +2,31 @@ package viewController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.PieChart;
-import javafx.scene.control.Button;
+import javafx.scene.chart.*;
 import javafx.scene.control.Label;
+import javafx.scene.Node;
 import javafx.stage.Stage;
-
-import java.io.IOException;
+import model.Cine;
+import navegacion.Navegador;
+import service.Sesion;
 
 public class DashboardAdminViewController {
+    @FXML private Label lblAdminName, lblTotalEntradas, lblTotalIngresos, lblOcupacion, lblReembolsos;
+    @FXML private BarChart<String, Number> barChartPeliculas;
+    @FXML private PieChart pieChartVentas;
+    @FXML private LineChart<String, Number> lineChartTendencias;
 
-    // --- Botones del Menú Lateral ---
-    @FXML
-    private Button btnOverview;
-    @FXML
-    private Button btnPeliculas;
-    @FXML
-    private Button btnSalas;
-    @FXML
-    private Button btnConfiteria;
-    @FXML
-    private Button btnReportes;
-    @FXML
-    private Button btnCerrarSesion;
-
-    // --- Elementos del Dashboard ---
-    @FXML
-    private Label lblAdminName;
-    @FXML
-    private Label lblTotalEntradas;
-    @FXML
-    private Label lblTotalIngresos;
-    @FXML
-    private Label lblOcupacion;
-    @FXML
-    private Label lblReembolsos;
-    @FXML
-    private BarChart<?, ?> barChartPeliculas;
-    @FXML
-    private PieChart pieChartVentas;
-    @FXML
-    private LineChart<?, ?> lineChartTendencias;
-
-    @FXML
-    public void initialize() {
-        // Aquí llenaremos los gráficos con datos estadísticos del Singleton Cine
+    @FXML public void initialize() {
+        Object usuario = Sesion.getInstancia().getUsuarioActual();
+        lblAdminName.setText(usuario instanceof model.Administrador a ? "Admin: " + a.getNombre() : "Administrador");
+        double ingresos = Cine.getInstancia().getListCompras().stream().filter(c -> !c.isCancelada()).mapToDouble(Compra -> Compra.getValorPagado()).sum();
+        lblTotalEntradas.setText(String.valueOf(Cine.getInstancia().getListCompras().stream().filter(c -> !c.isCancelada()).mapToInt(c -> c.getTheCompraCarrito().getElementos().size()).sum()));
+        lblTotalIngresos.setText(String.format("$ %,.0f", ingresos));
+        lblOcupacion.setText("—");
+        lblReembolsos.setText(String.valueOf(Cine.getInstancia().getListCompras().stream().filter(model.Compra::isCancelada).count()));
     }
-
-    // ==========================================
-    // MÉTODO MAESTRO PARA CAMBIAR DE PANTALLA
-    // ==========================================
-    private void cambiarEscena(ActionEvent event, String archivoFxml) {
-        try {
-            // ¡AQUÍ ESTÁ LA MAGIA! Agregamos la ruta exacta de tu carpeta de recursos
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/uniquindio/cinemauq/" + archivoFxml));
-            Parent root = loader.load();
-
-            // Obtener la ventana (Stage) actual a partir del botón que se hizo clic
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-            // Poner la nueva escena en la ventana
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            System.err.println("Error al intentar abrir la pantalla: " + archivoFxml);
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    void handleNavOverview(ActionEvent event) {
-        System.out.println("Ya estás en el Overview");
-    }
-
-    @FXML
-    void handleNavGestion(ActionEvent event) {
-        cambiarEscena(event, "GestionAdmin.fxml");
-    }
-
-    @FXML
-    void handleCerrarSesion(ActionEvent event) {
-        cambiarEscena(event, "Login.fxml");
-    }
+    @FXML private void handleNavOverview(ActionEvent e) { }
+    @FXML private void handleNavGestion(ActionEvent e) { navegar(e, "GestionAdmin.fxml"); }
+    @FXML private void handleCerrarSesion(ActionEvent e) { Sesion.getInstancia().cerrarSesion(); navegar(e, "Login.fxml"); }
+    private void navegar(ActionEvent e, String fxml) { new Navegador((Stage)((Node)e.getSource()).getScene().getWindow()).navegar(fxml); }
 }

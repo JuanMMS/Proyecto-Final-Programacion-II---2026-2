@@ -51,8 +51,8 @@ public class GestorUsuarios {
     public Cliente buscarCliente(String usuario) {
 
         for (Cliente cliente : clientes) {
-            if (cliente.getCuenta().getUsuario()
-                    .equalsIgnoreCase(usuario)) {
+            if (cliente.getCuenta().getUsuario().equalsIgnoreCase(usuario)
+                    || cliente.getEmail().equalsIgnoreCase(usuario)) {
                 return cliente;
             }
         }

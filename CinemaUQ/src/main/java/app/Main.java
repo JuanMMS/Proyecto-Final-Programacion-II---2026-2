@@ -17,7 +17,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
-
+            DatosIniciales.cargar();
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/uniquindio/cinemauq/Login.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
