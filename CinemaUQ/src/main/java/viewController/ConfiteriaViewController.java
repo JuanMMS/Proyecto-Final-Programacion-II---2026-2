@@ -23,6 +23,7 @@ public class ConfiteriaViewController {
     @FXML private FlowPane contenedorCombos;
     @FXML private CheckBox chkSal, chkDulce;
     @FXML private ComboBox<String> cmbTipoGaseosa, cmbTipoChocolatina;
+    @FXML private ComboBox<Confiteria> cmbProductoInventario;
     @FXML private ListView<Elemento> listViewCarrito;
     @FXML private Label lblTotalCarrito;
     private final FlujoCompra flujo = FlujoCompra.getInstancia();
@@ -30,6 +31,7 @@ public class ConfiteriaViewController {
     @FXML public void initialize() {
         cmbTipoGaseosa.getItems().setAll("PEPSI", "COCACOLA", "FANTA");
         cmbTipoChocolatina.getItems().setAll("CONLECHE", "BLANCO", "CARAMELIZADO");
+        cmbProductoInventario.getItems().setAll(Cine.getInstancia().getListConfiterias());
         listViewCarrito.setCellFactory(v -> new ListCell<>() {
             @Override protected void updateItem(Elemento item, boolean empty) {
                 super.updateItem(item, empty);
@@ -64,6 +66,12 @@ public class ConfiteriaViewController {
         if (cmbTipoChocolatina.getValue() == null) { alerta("Selecciona una chocolatina."); return; }
         TipoChocolatina tipo = TipoChocolatina.valueOf(cmbTipoChocolatina.getValue());
         flujo.getCarrito().agregar(new ChocolatinaFactory().crearConfiteria(new DatosConfiteria(tipo.name(), 4500, tipo)));
+        refrescarCarrito();
+    }
+    @FXML private void handleAgregarProductoInventario(ActionEvent e) {
+        Confiteria producto = cmbProductoInventario.getValue();
+        if (producto == null) { alerta("No hay un producto del inventario seleccionado."); return; }
+        flujo.getCarrito().agregar(producto);
         refrescarCarrito();
     }
     @FXML private void handleIrACheckout(ActionEvent e) {

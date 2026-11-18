@@ -53,6 +53,10 @@
                         <Separator style="-fx-background-color: #2a2a35;"/>
                         <ComboBox fx:id="cmbTipoChocolatina" promptText="Selecciona Chocolatina ($ 4.500)" maxWidth="Infinity"/>
                         <Button text="+ Agregar Chocolatina" styleClass="button-primary" onAction="#handleAgregarChocolatina"/>
+                        <Separator style="-fx-background-color: #2a2a35;"/>
+                        <Label text="Productos publicados por administración" styleClass="subtitle-text"/>
+                        <ComboBox fx:id="cmbProductoInventario" promptText="Producto del inventario" maxWidth="Infinity"/>
+                        <Button text="+ Agregar producto del inventario" styleClass="button-primary" onAction="#handleAgregarProductoInventario"/>
                     </VBox>
                 </HBox>
             </Tab>

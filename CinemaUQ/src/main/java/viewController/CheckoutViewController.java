@@ -51,8 +51,6 @@ public class CheckoutViewController {
         try {
             CompraFachada fachada = new CompraFachada(cuenta, txtContraseniaConfirmacion.getText(), flujo.getCarrito(), total, flujo.getFuncion());
             fachada.hacerCompra();
-            int puntosGanados = CuentaPuntos.puntosPorValor(total);
-            CuentaPuntos.acumular(cuenta, puntosGanados, java.time.LocalDate.now(), "COMPRA-" + Cine.getInstancia().getListCompras().size());
             Alert confirmacion = new Alert(Alert.AlertType.INFORMATION);
             confirmacion.setTitle("Compra realizada");
             confirmacion.setHeaderText("¡Tu pago fue aprobado!");

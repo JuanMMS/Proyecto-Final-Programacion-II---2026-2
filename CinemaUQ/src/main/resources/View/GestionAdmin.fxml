@@ -88,48 +88,88 @@
                 </HBox>
             </Tab>
 
-            <!-- 2. PESTAÑA: SALAS Y ASIENTOS -->
+            <!-- 2. SALAS Y ASIENTOS -->
             <Tab text="🚪 Salas y Asientos">
-                <VBox alignment="CENTER">
-                    <Label text="Configuración de Salas y Asientos (Próximamente)" style="-fx-text-fill: white;"/>
+                <VBox spacing="12" style="-fx-padding: 20;">
+                    <Label text="Crear una sala y generar automáticamente sus asientos" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <TextField fx:id="txtNombreSala" promptText="Identificador (ej. 3)" prefWidth="180"/>
+                        <TextField fx:id="txtFilasSala" text="5" promptText="Filas" prefWidth="90"/>
+                        <TextField fx:id="txtColumnasSala" text="8" promptText="Columnas" prefWidth="90"/>
+                        <Button text="Crear sala" onAction="#crearSala" styleClass="button-primary"/>
+                        <Button text="Eliminar sala seleccionada" onAction="#eliminarSala"/>
+                    </HBox>
+                    <TableView fx:id="tablaSalas" VBox.vgrow="ALWAYS"/>
                 </VBox>
             </Tab>
 
-            <!-- 3. PESTAÑA: PRODUCTOS Y COMBOS -->
+            <!-- 3. PRODUCTOS Y COMBOS -->
             <Tab text="🍿 Productos y Combos">
-                <VBox alignment="CENTER">
-                    <Label text="Inventario de Confitería" style="-fx-text-fill: white;"/>
+                <VBox spacing="12" style="-fx-padding: 20;">
+                    <Label text="Inventario de confitería" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <HBox spacing="10">
+                        <TextField fx:id="txtNombreProducto" promptText="Nombre del producto" HBox.hgrow="ALWAYS"/>
+                        <ComboBox fx:id="cmbTipoProducto" promptText="Tipo" prefWidth="150"/>
+                        <TextField fx:id="txtPrecioProducto" promptText="Precio" prefWidth="120"/>
+                        <Button text="Agregar producto" onAction="#agregarProducto" styleClass="button-primary"/>
+                        <Button text="Eliminar seleccionado" onAction="#eliminarProducto"/>
+                    </HBox>
+                    <TableView fx:id="tablaProductos" VBox.vgrow="ALWAYS"/>
                 </VBox>
             </Tab>
 
-            <!-- 4. PESTAÑA: PROMOCIONES -->
+            <!-- 4. PROMOCIONES -->
             <Tab text="🏷️ Promociones">
-                <VBox alignment="CENTER">
-                    <Label text="Gestión de Códigos de Descuento" style="-fx-text-fill: white;"/>
+                <VBox spacing="12" style="-fx-padding: 20;">
+                    <Label text="Administrar códigos promocionales (registro y activación)" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <HBox spacing="10">
+                        <TextField fx:id="txtCodigoPromo" promptText="Código (ej. CINE10)" HBox.hgrow="ALWAYS"/>
+                        <TextField fx:id="txtPorcentajePromo" promptText="Descuento %" prefWidth="130"/>
+                        <Button text="Crear promoción" onAction="#crearPromocion" styleClass="button-primary"/>
+                        <Button text="Activar / desactivar" onAction="#alternarPromocion"/>
+                    </HBox>
+                    <TableView fx:id="tablaPromociones" VBox.vgrow="ALWAYS"/>
                 </VBox>
             </Tab>
 
-            <!-- 5. PESTAÑA: CLIENTES Y COMPRAS -->
+            <!-- 5. CLIENTES Y COMPRAS -->
             <Tab text="👥 Clientes y Compras">
-                <VBox alignment="CENTER">
-                    <Label text="Historial de Transacciones" style="-fx-text-fill: white;"/>
-                </VBox>
+                <SplitPane dividerPositions="0.48">
+                    <VBox spacing="8" style="-fx-padding: 12;">
+                        <Label text="Clientes registrados" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                        <TableView fx:id="tablaClientes" VBox.vgrow="ALWAYS"/>
+                    </VBox>
+                    <VBox spacing="8" style="-fx-padding: 12;">
+                        <Label text="Historial global de compras" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                        <TableView fx:id="tablaComprasAdmin" VBox.vgrow="ALWAYS"/>
+                    </VBox>
+                </SplitPane>
             </Tab>
 
-            <!-- 6. PESTAÑA: RECARGAR TARJETAS -->
+            <!-- 6. RECARGAS -->
             <Tab text="💳 Recargar Tarjetas">
-                <VBox alignment="CENTER">
-                    <Label text="Gestión de Tarjetas Virtuales" style="-fx-text-fill: white;"/>
+                <VBox spacing="12" style="-fx-padding: 20;">
+                    <Label text="Acreditar saldo a la tarjeta virtual de un cliente" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <HBox spacing="10">
+                        <ComboBox fx:id="cmbClienteRecarga" promptText="Seleccionar cliente" prefWidth="280"/>
+                        <TextField fx:id="txtMontoRecargaAdmin" promptText="Monto a recargar" prefWidth="180"/>
+                        <Button text="Aprobar recarga" onAction="#recargarTarjeta" styleClass="button-primary"/>
+                    </HBox>
+                    <Label text="La operación quedará registrada en el historial de movimientos del cliente." styleClass="subtitle-text"/>
                 </VBox>
             </Tab>
 
-            <!-- 7. PESTAÑA: REPORTES -->
-            <Tab text="📄 Reportes (PDF / TXT)">
-                <VBox alignment="CENTER">
-                    <Label text="Generador de Reportes Administrativos" style="-fx-text-fill: white;"/>
+            <!-- 7. REPORTES -->
+            <Tab text="📄 Reportes (TXT)">
+                <VBox spacing="12" style="-fx-padding: 20;">
+                    <Label text="Generador de reportes administrativos" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <HBox spacing="10">
+                        <Button text="Generar / actualizar reporte" onAction="#generarReporte" styleClass="button-primary"/>
+                        <Button text="Guardar como TXT" onAction="#guardarReporte"/>
+                    </HBox>
+                    <TextArea fx:id="txtReportePreview" editable="false" wrapText="false" promptText="El reporte aparecerá aquí..." VBox.vgrow="ALWAYS"/>
                 </VBox>
             </Tab>
-
         </TabPane>
     </center>
 </BorderPane>

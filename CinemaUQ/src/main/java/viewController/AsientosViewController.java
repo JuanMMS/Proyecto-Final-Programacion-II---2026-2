@@ -36,11 +36,28 @@ public class AsientosViewController {
             boolean ocupado = funcion.isAsientoOcupado(asiento);
             boton.setDisable(ocupado);
             boton.setStyle(ocupado ? "-fx-background-color: #555;" : "-fx-background-color: #3b2e5a; -fx-text-fill: white;");
-            boton.setOnAction(e -> { flujo.alternarAsiento(asiento); actualizarResumen(); });
+            boton.setOnAction(e -> {
+                flujo.alternarAsiento(asiento);
+                actualizarEstiloAsientos();
+                actualizarResumen();
+            });
             gridAsientos.add(boton, i % 8, i / 8);
         }
         actualizarResumen();
     }
+    private void actualizarEstiloAsientos() {
+        for (javafx.scene.Node nodo : gridAsientos.getChildren()) {
+            if (nodo instanceof ToggleButton boton) {
+                boolean seleccionado = flujo.getAsientos().stream().anyMatch(a -> a.getIdAsiento().equals(boton.getText()));
+                boolean ocupado = flujo.getFuncion().getAsientosOcupados().stream().anyMatch(a -> a.getIdAsiento().equals(boton.getText()));
+                if (ocupado) boton.setStyle("-fx-background-color: #555; -fx-text-fill: white;");
+                else if (seleccionado) boton.setStyle("-fx-background-color: #f5c542; -fx-text-fill: #171717; -fx-font-weight: bold;");
+                else boton.setStyle("-fx-background-color: #3b2e5a; -fx-text-fill: white;");
+                boton.setSelected(seleccionado);
+            }
+        }
+    }
+
     private void actualizarResumen() {
         flowAsientosSeleccionados.getChildren().clear();
         for (Asiento asiento : flujo.getAsientos()) flowAsientosSeleccionados.getChildren().add(new Label(asiento.getIdAsiento()));

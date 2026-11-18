@@ -134,6 +134,17 @@ public class Compra implements Fachada {
         TarjetaVirtual tarjeta = cuenta.getTheTarjetaVirtualCliente();
         if (tarjeta != null && monto > 0) {
             tarjeta.setSaldo(tarjeta.getSaldo() + monto);
+            tarjeta.registrarMovimiento("Reembolso", "Reembolso de compra " + id, monto);
+        }
+
+        // Al cancelar se liberan los asientos para que puedan volver a venderse.
+        if (funcion != null && theCompraCarrito != null) {
+            for (composite.Elemento elemento : theCompraCarrito.getElementos()) {
+                if (elemento instanceof Entrada entrada) {
+                    funcion.liberarAsiento(entrada.getElAsiento());
+                    funcion.getListEntradasFuncion().remove(entrada);
+                }
+            }
         }
 
         //Los puntos ganados con esta compra se pierden y los redimidos se devuelven en el mismo porcentaje

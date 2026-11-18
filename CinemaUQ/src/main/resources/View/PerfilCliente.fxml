@@ -27,7 +27,7 @@
                         </VBox>
                         <VBox styleClass="dashboard-card" HBox.hgrow="ALWAYS" spacing="10.0">
                             <Label text="Solicitar Recarga de Saldo" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
-                            <Label text="Nota: La recarga será aprobada por un administrador." styleClass="subtitle-text"/>
+                            <Label text="Nota: La recarga se acredita inmediatamente en esta versión de demostración." styleClass="subtitle-text"/>
                             <HBox spacing="10.0">
                                 <TextField fx:id="txtMontoRecarga" promptText="Monto a recargar (ej. 50000)" styleClass="text-field" HBox.hgrow="ALWAYS"/>
                                 <Button text="Solicitar Recarga" styleClass="button-primary" onAction="#handleSolicitarRecarga"/>

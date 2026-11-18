@@ -9,6 +9,10 @@ import proxy.MedioPago;
 import proxy.PagoTarjetaProxy;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
+import model.CuentaPuntos;
 
 /** Coordina validación, pago y registro de la compra. */
 public class CompraFachada implements Fachada {
@@ -28,26 +32,46 @@ public class CompraFachada implements Fachada {
     }
     @Override public void hacerCompra() {
         validarDatos();
-        if (funcion != null) {
-            for (composite.Elemento elemento : carrito.getElementos()) {
-                if (elemento instanceof model.Entrada entrada
-                        && funcion.isAsientoOcupado(entrada.getElAsiento())) {
+        MedioPago pago = new PagoTarjetaProxy(cuenta, contrasenia);
+        Set<model.Asiento> asientosEnCompra = new HashSet<>();
+        for (composite.Elemento elemento : carrito.getElementos()) {
+            if (elemento instanceof model.Entrada entrada && funcion != null) {
+                if (!asientosEnCompra.add(entrada.getElAsiento())) {
+                    throw new IllegalStateException("El carrito contiene dos veces el asiento " + entrada.getElAsiento().getIdAsiento() + ".");
+                }
+                if (funcion.isAsientoOcupado(entrada.getElAsiento())) {
                     throw new IllegalStateException("El asiento " + entrada.getElAsiento().getIdAsiento() + " ya fue vendido.");
                 }
             }
         }
-        MedioPago pago = new PagoTarjetaProxy(cuenta, contrasenia);
         pago.pagar(valorTotal);
-        Compra compra = new Compra("COMPRA-" + (cine.getListCompras().size() + 1), valorTotal,
-                LocalDate.now(), LocalTime.now(), carrito, cuenta, funcion);
-        cine.getListCompras().add(compra);
-        if (funcion != null) {
-            for (composite.Elemento elemento : carrito.getElementos()) {
-                if (elemento instanceof model.Entrada entrada) {
-                    funcion.ocuparAsiento(entrada.getElAsiento());
-                    funcion.getListEntradasFuncion().add(entrada);
+        String idCompra = "COMPRA-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        Compra compra = new Compra(idCompra, valorTotal, LocalDate.now(), LocalTime.now(), carrito, cuenta, funcion);
+        int puntos = CuentaPuntos.puntosPorValor(valorTotal);
+        compra.setPuntosGenerados(puntos);
+        CuentaPuntos.acumular(cuenta, puntos, LocalDate.now(), idCompra);
+        java.util.List<model.Entrada> entradasReservadas = new java.util.ArrayList<>();
+        try {
+            if (funcion != null) {
+                for (composite.Elemento elemento : carrito.getElementos()) {
+                    if (elemento instanceof model.Entrada entrada) {
+                        funcion.ocuparAsiento(entrada.getElAsiento());
+                        funcion.getListEntradasFuncion().add(entrada);
+                        entradasReservadas.add(entrada);
+                    }
                 }
             }
+            cine.getListCompras().add(compra);
+        } catch (RuntimeException ex) {
+            if (funcion != null) for (model.Entrada entrada : entradasReservadas) {
+                funcion.liberarAsiento(entrada.getElAsiento());
+                funcion.getListEntradasFuncion().remove(entrada);
+            }
+            CuentaPuntos.revertir(cuenta, idCompra);
+            model.TarjetaVirtual tarjeta = cuenta.getTheTarjetaVirtualCliente();
+            tarjeta.setSaldo(tarjeta.getSaldo() + valorTotal);
+            tarjeta.registrarMovimiento("Reversión", "Reversión de compra fallida " + idCompra, valorTotal);
+            throw ex;
         }
     }
     private void validarDatos() {
