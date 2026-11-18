@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import model.*;
 import navegacion.Navegador;
 import service.Sesion;
+import controller.PerfilClienteController;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -28,11 +29,12 @@ public class PerfilClienteViewController {
     @FXML private TableColumn<CuentaPuntos,Number> colCantidadPuntos;
     @FXML private TableColumn<CuentaPuntos,String> colFechaObtencion, colFechaVencimiento, colEstadoPuntos;
     private Cliente cliente;
+    private final PerfilClienteController perfilController = new PerfilClienteController();
     private static final DateTimeFormatter FECHA_HORA = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     @FXML public void initialize() {
-        Object actual = Sesion.getInstancia().getUsuarioActual();
-        if (!(actual instanceof Cliente c)) {
+        Cliente c = perfilController.obtenerClienteActual();
+        if (c == null) {
             mostrarVacio("Inicia sesión como cliente para consultar tu perfil.");
             return;
         }
@@ -77,11 +79,10 @@ public class PerfilClienteViewController {
         TarjetaVirtual tarjeta = cuenta.getTheTarjetaVirtualCliente();
         lblSaldoTarjeta.setText(moneda(tarjeta.getSaldo()));
         lblIdTarjeta.setText("Tarjeta #" + tarjeta.getId());
-        int puntos = CuentaPuntos.puntosDisponibles(cuenta, LocalDate.now());
+        int puntos = perfilController.obtenerPuntosDisponibles(cuenta);
         lblTotalPuntosVigentes.setText("Total Puntos Vigentes: " + puntos + " pts");
         tablaMovimientos.getItems().setAll(tarjeta.getMovimientos().stream().toList());
-        tablaCompras.getItems().setAll(Cine.getInstancia().getListCompras().stream()
-                .filter(x -> x.getCuenta() == cuenta).toList());
+        tablaCompras.getItems().setAll(perfilController.obtenerCompras(cuenta));
         tablaPuntos.getItems().setAll(cuenta.getListCuentaPuntos());
         tablaMovimientos.refresh(); tablaCompras.refresh(); tablaPuntos.refresh();
     }
@@ -98,7 +99,7 @@ public class PerfilClienteViewController {
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION, "¿Deseas cancelar esta compra? El reembolso se calculará según el tiempo restante para la función.", ButtonType.CANCEL, ButtonType.OK);
         if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
         try {
-            double monto = compra.cancelar(java.time.LocalDateTime.now());
+            double monto = perfilController.cancelarCompra(compra);
             refrescarDatos();
             alerta(Alert.AlertType.INFORMATION, "Compra cancelada. Reembolso: " + moneda(monto));
         } catch (RuntimeException ex) { alerta(Alert.AlertType.ERROR, ex.getMessage()); }
@@ -108,7 +109,7 @@ public class PerfilClienteViewController {
         new Navegador((Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow()).navegar("Cartelera.fxml");
     }
     @FXML private void handleCerrarSesion(ActionEvent event) {
-        Sesion.getInstancia().cerrarSesion();
+        perfilController.cerrarSesion();
         new Navegador((Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow()).navegar("Login.fxml");
     }
     private void mostrarVacio(String texto) {

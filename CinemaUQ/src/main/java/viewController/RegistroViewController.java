@@ -10,7 +10,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import navegacion.Navegador;
-import service.RegistroService;
+import controller.RegistroController;
 
 public class RegistroViewController {
 
@@ -23,8 +23,7 @@ public class RegistroViewController {
     @FXML private Button btnRegistrar;
     @FXML private Hyperlink linkLogin;
 
-    private final RegistroService registroService =
-            new RegistroService();
+    private final RegistroController registroController = new RegistroController();
 
     @FXML
     void handleRegistrar(ActionEvent event) {
@@ -36,16 +35,7 @@ public class RegistroViewController {
             String usuario = txtUsuario.getText().trim();
             String contrasenia = txtContrasenia.getText();
 
-            int edad = Integer.parseInt(txtEdad.getText().trim());
-
-            registroService.registrarCliente(
-                    nombre,
-                    documento,
-                    edad,
-                    correo,
-                    usuario,
-                    contrasenia
-            );
+            registroController.registrar(nombre, documento, txtEdad.getText(), correo, usuario, contrasenia);
 
             mostrarAlerta(
                     Alert.AlertType.INFORMATION,
@@ -55,13 +45,6 @@ public class RegistroViewController {
             );
 
             navegarALogin();
-
-        } catch (NumberFormatException e) {
-            mostrarAlerta(
-                    Alert.AlertType.ERROR,
-                    "Dato inválido",
-                    "La edad debe ser un número entero."
-            );
 
         } catch (IllegalArgumentException e) {
             mostrarAlerta(

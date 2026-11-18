@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewController.LoginViewController">
+<StackPane stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewcontroller.LoginViewController">
     <!-- Fondo decorativo opcional -->
     <VBox alignment="CENTER" spacing="20.0" maxWidth="400.0" maxHeight="500.0" style="-fx-background-color: #14141d; -fx-padding: 40; -fx-background-radius: 15;">
 

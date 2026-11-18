@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane stylesheets="@css/styles.css" style="-fx-background-color: #0d0d12;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewcontroller.GestionAdminViewController">
+<BorderPane stylesheets="@css/styles.css" style="-fx-background-color: #0d0d12;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewcontroller.GestionAdminViewController">
 
     <!-- BARRA SUPERIOR -->
     <top>
