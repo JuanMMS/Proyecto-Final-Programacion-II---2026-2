@@ -18,12 +18,12 @@ public class Navegador {
     public void navegar(String archivoFXML) {
 
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource(
-                            "/uniquindio/cinemauq/" + archivoFXML
-                    )
-            );
-
+            java.net.URL recurso = getClass().getResource("/uniquindio/cinemauq/" + archivoFXML);
+            if (recurso == null) {
+                throw new IOException("No existe el recurso /uniquindio/cinemauq/" + archivoFXML
+                        + ". Verifica que esté dentro de src/main/resources/uniquindio/cinemauq.");
+            }
+            FXMLLoader loader = new FXMLLoader(recurso);
             Parent root = loader.load();
 
             Scene scene = new Scene(root);

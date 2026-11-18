@@ -71,7 +71,7 @@
                             <HBox alignment="CENTER_LEFT">
                                 <Label text="Funciones activas" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
                                 <Region HBox.hgrow="ALWAYS" />
-                                <Button text="Cancelar función (política de reembolso)" onAction="#cancelarFuncion" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                                <Button text="Cancelar función (reembolso 100%)" onAction="#cancelarFuncion" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;"/>
                             </HBox>
                             <TableView fx:id="tablaFunciones" VBox.vgrow="ALWAYS" style="-fx-background-color: #8c8c9e;">
                                 <columns>

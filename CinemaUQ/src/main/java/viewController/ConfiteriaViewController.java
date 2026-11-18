@@ -1,8 +1,12 @@
 package viewController;
 
 import composite.Elemento;
-import decorator.*;
-import factory.*;
+import decorator.ComplementoPalomita;
+import decorator.ConDulce;
+import decorator.ConSal;
+import factory.DatosConfiteria;
+import factory.GaseosaFactory;
+import factory.ChocolatinaFactory;
 import factory.combos.Combo1;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +16,7 @@ import javafx.stage.Stage;
 import model.*;
 import navegacion.FlujoCompra;
 import navegacion.Navegador;
+
 import java.util.Locale;
 
 public class ConfiteriaViewController {
@@ -20,35 +25,55 @@ public class ConfiteriaViewController {
     @FXML private ComboBox<String> cmbTipoGaseosa, cmbTipoChocolatina;
     @FXML private ListView<Elemento> listViewCarrito;
     @FXML private Label lblTotalCarrito;
+    private final FlujoCompra flujo = FlujoCompra.getInstancia();
 
     @FXML public void initialize() {
         cmbTipoGaseosa.getItems().setAll("PEPSI", "COCACOLA", "FANTA");
         cmbTipoChocolatina.getItems().setAll("CONLECHE", "BLANCO", "CARAMELIZADO");
         listViewCarrito.setCellFactory(v -> new ListCell<>() {
-            @Override protected void updateItem(Elemento item, boolean empty) { super.updateItem(item,empty); setText(empty||item==null?null:item.getNombre()+"  -  "+dinero(item.getPrecio())); }
+            @Override protected void updateItem(Elemento item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.getNombre() + " — " + moneda(item.getPrecio()));
+            }
         });
-        actualizarCarrito();
+        refrescarCarrito();
     }
     @FXML private void handleAgregarCombo1(ActionEvent e) {
-        Combo1 combo=new Combo1(); FlujoCompra.getCarrito().agregar(combo.crearPalomita()); FlujoCompra.getCarrito().agregar(combo.crearGaseosa()); FlujoCompra.getCarrito().agregar(combo.crearChocolatina()); actualizarCarrito();
+        Combo1 combo = new Combo1();
+        flujo.getCarrito().agregar(combo.crearGasesosa());
+        flujo.getCarrito().agregar((Elemento) combo.crearPalomita());
+        flujo.getCarrito().agregar(combo.crearChocolatina());
+        refrescarCarrito();
     }
     @FXML private void handleAgregarPalomitas(ActionEvent e) {
-        ComplementoPalomita p=new Palomita("Palomitas grandes",8000);
-        if(chkSal.isSelected()) p=new ConSal(p); if(chkDulce.isSelected()) p=new ConDulce(p);
-        FlujoCompra.getCarrito().agregar(p); chkSal.setSelected(false); chkDulce.setSelected(false); actualizarCarrito();
+        ComplementoPalomita palomitas = new Palomita("Palomitas grandes", 8000);
+        if (chkSal.isSelected()) palomitas = new ConSal(palomitas);
+        if (chkDulce.isSelected()) palomitas = new ConDulce(palomitas);
+        flujo.getCarrito().agregar((Elemento) palomitas);
+        chkSal.setSelected(false); chkDulce.setSelected(false);
+        refrescarCarrito();
     }
     @FXML private void handleAgregarGaseosa(ActionEvent e) {
-        if(cmbTipoGaseosa.getValue()==null){alerta("Selecciona gaseosa","Elige una bebida antes de agregarla.");return;}
-        TipoGaseosa tipo=TipoGaseosa.valueOf(cmbTipoGaseosa.getValue());
-        FlujoCompra.getCarrito().agregar(new GaseosaFactory().crearConfiteria(new DatosConfiteria(tipo.name(),5000,tipo))); actualizarCarrito();
+        if (cmbTipoGaseosa.getValue() == null) { alerta("Selecciona una gaseosa."); return; }
+        TipoGaseosa tipo = TipoGaseosa.valueOf(cmbTipoGaseosa.getValue());
+        double precio = 5000;
+        flujo.getCarrito().agregar(new GaseosaFactory().crearConfiteria(new DatosConfiteria(tipo.name(), precio, tipo)));
+        refrescarCarrito();
     }
     @FXML private void handleAgregarChocolatina(ActionEvent e) {
-        if(cmbTipoChocolatina.getValue()==null){alerta("Selecciona chocolatina","Elige una chocolatina antes de agregarla.");return;}
-        TipoChocolatina tipo=TipoChocolatina.valueOf(cmbTipoChocolatina.getValue());
-        FlujoCompra.getCarrito().agregar(new ChocolatinaFactory().crearConfiteria(new DatosConfiteria("Chocolatina "+tipo.name().toLowerCase(Locale.ROOT),4500,tipo))); actualizarCarrito();
+        if (cmbTipoChocolatina.getValue() == null) { alerta("Selecciona una chocolatina."); return; }
+        TipoChocolatina tipo = TipoChocolatina.valueOf(cmbTipoChocolatina.getValue());
+        flujo.getCarrito().agregar(new ChocolatinaFactory().crearConfiteria(new DatosConfiteria(tipo.name(), 4500, tipo)));
+        refrescarCarrito();
     }
-    @FXML private void handleIrACheckout(ActionEvent e) { new Navegador((Stage)lblTotalCarrito.getScene().getWindow()).navegar("Checkout.fxml"); }
-    private void actualizarCarrito(){ listViewCarrito.getItems().setAll(FlujoCompra.getCarrito().getElementos()); lblTotalCarrito.setText(dinero(FlujoCompra.getCarrito().getPrecio())); }
-    private String dinero(double v){return String.format(Locale.US,"$ %,.0f",v);}
-    private void alerta(String t,String m){Alert a=new Alert(Alert.AlertType.WARNING,t,m,ButtonType.OK);a.showAndWait();}
+    @FXML private void handleIrACheckout(ActionEvent e) {
+        if (flujo.getFuncion() == null || flujo.getAsientos().isEmpty()) { alerta("Primero selecciona una función y tus asientos."); return; }
+        new Navegador((Stage)((javafx.scene.Node)e.getSource()).getScene().getWindow()).navegar("Checkout.fxml");
+    }
+    private void refrescarCarrito() {
+        listViewCarrito.getItems().setAll(flujo.getCarrito().getElementos());
+        lblTotalCarrito.setText(moneda(flujo.getCarrito().getPrecio()));
+    }
+    private String moneda(double valor) { return String.format(Locale.forLanguageTag("es-CO"), "$ %,.0f", valor); }
+    private void alerta(String m) { new Alert(Alert.AlertType.WARNING, m).showAndWait(); }
 }

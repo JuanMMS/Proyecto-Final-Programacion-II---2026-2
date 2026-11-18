@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import model.Cliente;
 import model.Administrador;
 import navegacion.Navegador;
-import navegacion.FlujoCompra;
 import service.AutenticacionService;
 import service.Sesion;
 
@@ -58,7 +57,6 @@ public class LoginViewController {
 
         // Guardar el usuario que inició sesión.
         Sesion.getInstancia().iniciarSesion(usuarioAutenticado);
-        FlujoCompra.limpiar();
 
         Stage stage = (Stage) btnIniciarSesion
                 .getScene()
