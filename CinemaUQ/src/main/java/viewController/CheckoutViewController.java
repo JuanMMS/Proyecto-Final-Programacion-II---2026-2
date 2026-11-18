@@ -1,4 +1,4 @@
-package viewController;
+package viewcontroller;
 
 import composite.Elemento;
 import fachada.CompraFachada;
@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import model.*;
 import navegacion.FlujoCompra;
 import navegacion.Navegador;
+import controller.CheckoutController;
 
 import java.util.Locale;
 
@@ -20,47 +21,51 @@ public class CheckoutViewController {
     @FXML private PasswordField txtContraseniaConfirmacion;
     @FXML private Button btnConfirmarPago;
     private final FlujoCompra flujo = FlujoCompra.getInstancia();
+    private final CheckoutController checkoutController = new CheckoutController();
     private Cuenta cuenta;
     private double total;
 
     @FXML public void initialize() {
-        cuenta = flujo.getCuentaActual();
+        cuenta = checkoutController.obtenerCuenta();
         if (cuenta == null) { btnConfirmarPago.setDisable(true); alerta(Alert.AlertType.WARNING, "Inicia sesión como cliente para pagar."); return; }
-        if (flujo.getFuncion() == null || flujo.getAsientos().isEmpty()) { btnConfirmarPago.setDisable(true); alerta(Alert.AlertType.WARNING, "No hay función o asientos seleccionados."); return; }
+        if (!checkoutController.tieneOrdenValida()) { btnConfirmarPago.setDisable(true); alerta(Alert.AlertType.WARNING, "No hay función o asientos seleccionados."); return; }
         // Añadir entradas una sola vez al carrito del flujo.
-        for (Asiento asiento : flujo.getAsientos()) {
-            boolean existe = flujo.getCarrito().getElementos().stream().anyMatch(x -> x instanceof Entrada en && en.getElAsiento().equals(asiento));
-            if (!existe) flujo.getCarrito().agregar(new Entrada("ENT-" + asiento.getIdAsiento(), 12000, asiento, flujo.getFuncion()));
-        }
+        checkoutController.prepararEntradas();
         StringBuilder detalle = new StringBuilder();
-        for (Elemento item : flujo.getCarrito().getElementos()) {
+        for (Elemento item : checkoutController.obtenerElementos()) {
             detalle.append("• ").append(item.getNombre()).append(" — ").append(moneda(item.getPrecio())).append('\n');
         }
-        total = flujo.getCarrito().getPrecio();
+        total = checkoutController.obtenerTotal();
         txtDetalleOrden.setText(detalle.toString());
         lblTotalPagar.setText(moneda(total));
         lblSaldoDisponible.setText("Saldo disponible: " + moneda(cuenta.getTheTarjetaVirtualCliente().getSaldo()));
-        int puntos = CuentaPuntos.puntosDisponibles(cuenta, java.time.LocalDate.now());
+        int puntos = checkoutController.obtenerPuntosDisponibles();
         lblPuntosDisponibles.setText("Puntos vigentes: " + puntos + " pts");
-        lblCostoEnPuntos.setText("Equivalencia: " + (int)Math.ceil(total / CuentaPuntos.VALOR_PUNTO) + " pts");
+        double descuentoConPuntos = Math.min(total, puntos * CuentaPuntos.VALOR_PUNTO);
+        lblCostoEnPuntos.setText("Descuento al usar todos tus puntos: " + moneda(descuentoConPuntos) + " (máximo: total de compra)");
         lblPuntosGanados.setText("Con esta compra ganarás: " + CuentaPuntos.puntosPorValor(total) + " pts ⭐");
-        rbPuntos.setDisable(true); // Redención no está conectada a una operación transaccional de pago en este proyecto.
+        rbPuntos.setDisable(puntos <= 0);
+        rbPuntos.setText("Usar todos mis puntos (" + puntos + " pts)");
     }
     @FXML private void handleConfirmarPago(ActionEvent event) {
-        if (!rbTarjetaVirtual.isSelected()) { alerta(Alert.AlertType.INFORMATION, "Selecciona tarjeta virtual para continuar."); return; }
+        if (!rbTarjetaVirtual.isSelected() && !rbPuntos.isSelected()) { alerta(Alert.AlertType.INFORMATION, "Selecciona un medio de pago."); return; }
         try {
-            CompraFachada fachada = new CompraFachada(cuenta, txtContraseniaConfirmacion.getText(), flujo.getCarrito(), total, flujo.getFuncion());
-            fachada.hacerCompra();
-            int puntosGanados = CuentaPuntos.puntosPorValor(total);
-            CuentaPuntos.acumular(cuenta, puntosGanados, java.time.LocalDate.now(), "COMPRA-" + Cine.getInstancia().getListCompras().size());
+            int puntosUsar = rbPuntos.isSelected() ? checkoutController.calcularPuntosRedimibles(total) : 0;
+            checkoutController.confirmarPago(txtContraseniaConfirmacion.getText(), rbPuntos.isSelected(), total);
             Alert confirmacion = new Alert(Alert.AlertType.INFORMATION);
             confirmacion.setTitle("Compra realizada");
             confirmacion.setHeaderText("¡Tu pago fue aprobado!");
-            confirmacion.setContentText("Total: " + moneda(total));
+            double descuento = Math.min(total, puntosUsar * CuentaPuntos.VALOR_PUNTO);
+            confirmacion.setContentText("Total: " + moneda(Math.max(0, total - descuento))
+                    + (descuento > 0 ? "\nDescuento por puntos: " + moneda(descuento)
+                    + "\nPuntos utilizados: " + puntosUsar : ""));
             confirmacion.showAndWait();
-            flujo.reiniciar();
             new Navegador((Stage)btnConfirmarPago.getScene().getWindow()).navegar("Cartelera.fxml");
         } catch (RuntimeException ex) { alerta(Alert.AlertType.ERROR, ex.getMessage()); }
+    }
+    @FXML private void handleMenuPrincipal(ActionEvent event) {
+        checkoutController.reiniciarCompra();
+        new Navegador((Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow()).navegar("Cartelera.fxml");
     }
     @FXML private void handleCancelar(ActionEvent event) {
         String destino = flujo.getAsientos().isEmpty() ? "Cartelera.fxml" : "Confiteria.fxml";

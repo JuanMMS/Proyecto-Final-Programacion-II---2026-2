@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewcontroller.ConfiteriaViewController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-background-color: #14141d; -fx-padding: 20 30;">
+            <Label text="🍿 Confitería y Combos" styleClass="title-text" style="-fx-font-size: 22px;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="Paso 2 de 3: Agrega snacks a tu función" styleClass="subtitle-text"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE" style="-fx-background-color: #0d0d12; -fx-padding: 20;">
+
+            <!-- PESTAÑA 1: COMBOS (Abstract factory) -->
+            <Tab text="Combos Especiales">
+                <ScrollPane fitToWidth="true" style="-fx-background: #0d0d12; -fx-background-color: transparent;">
+                    <FlowPane fx:id="contenedorCombos" hgap="20.0" vgap="20.0" style="-fx-padding: 20;">
+                        <!-- Ejemplo de tarjeta de combo -->
+                        <VBox spacing="10.0" styleClass="movie-card" prefWidth="240.0">
+                            <Label text="Combo 1 - Pareja" style="-fx-text-fill: #f5b041; -fx-font-weight: bold; -fx-font-size: 16px;"/>
+                            <Label text="• 1 Palomitas medianas con sal y dulce&#10;• 1 Gaseosa Pepsi&#10;• 1 Chocolatina con leche" styleClass="subtitle-text" wrapText="true"/>
+                            <Label text="\$15.500" style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+                            <Button text="+ Agregar Combo" maxWidth="Infinity" styleClass="button-primary" onAction="#handleAgregarCombo1"/>
+                        </VBox>
+                    </FlowPane>
+                </ScrollPane>
+            </Tab>
+
+            <!-- PESTAÑA 2: PRODUCTOS INDIVIDUALES Y DECORATOR -->
+            <Tab text="Arma tu Snack">
+                <HBox spacing="30.0" style="-fx-padding: 20;">
+                    <!-- Personalizador de Palomitas (Decorator) -->
+                    <VBox spacing="15.0" styleClass="dashboard-card" prefWidth="350.0">
+                        <Label text="Personaliza tus Palomitas" style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+                        <Label text="Base: Palomitas Grandes ($ 8.000)" styleClass="subtitle-text"/>
+                        <Separator style="-fx-background-color: #2a2a35;"/>
+                        <CheckBox fx:id="chkSal" text="Adicionar Sal (+ $ 1.000)" style="-fx-text-fill: white;"/>
+                        <CheckBox fx:id="chkDulce" text="Adicionar Caramelo/Dulce (+ $ 2.000)" style="-fx-text-fill: white;"/>
+                        <Region VBox.vgrow="ALWAYS"/>
+                        <Button text="+ Agregar Palomitas" maxWidth="Infinity" styleClass="button-primary" onAction="#handleAgregarPalomitas"/>
+                    </VBox>
+
+                    <!-- Bebidas y Dulces (factory Method) -->
+                    <VBox spacing="15.0" styleClass="dashboard-card" HBox.hgrow="ALWAYS">
+                        <Label text="Bebidas y Chocolatinas" style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+                        <ComboBox fx:id="cmbTipoGaseosa" promptText="Selecciona Gaseosa ($ 5.000)" maxWidth="Infinity"/>
+                        <Button text="+ Agregar Gaseosa" styleClass="button-primary" onAction="#handleAgregarGaseosa"/>
+                        <Separator style="-fx-background-color: #2a2a35;"/>
+                        <ComboBox fx:id="cmbTipoChocolatina" promptText="Selecciona Chocolatina ($ 4.500)" maxWidth="Infinity"/>
+                        <Button text="+ Agregar Chocolatina" styleClass="button-primary" onAction="#handleAgregarChocolatina"/>
+                        <Separator style="-fx-background-color: #2a2a35;"/>
+                        <Label text="Productos publicados por administración" styleClass="subtitle-text"/>
+                        <ComboBox fx:id="cmbProductoInventario" promptText="Producto del inventario" maxWidth="Infinity"/>
+                        <Button text="+ Agregar producto del inventario" styleClass="button-primary" onAction="#handleAgregarProductoInventario"/>
+                    </VBox>
+                </HBox>
+            </Tab>
+        </TabPane>
+    </center>
+
+    <!-- Carrito Lateral (Composite) -->
+    <right>
+        <VBox spacing="15.0" prefWidth="320.0" style="-fx-background-color: #14141d; -fx-padding: 25;">
+            <Label text="Tu Carrito Actual" styleClass="title-text" style="-fx-font-size: 18px;"/>
+            <ListView fx:id="listViewCarrito" VBox.vgrow="ALWAYS" style="-fx-background-color: #1a1a24; -fx-control-inner-background: #1a1a24;"/>
+
+            <HBox>
+                <Label text="TOTAL CARRITO:" style="-fx-text-fill: #f5b041; -fx-font-weight: bold; -fx-font-size: 16px;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="lblTotalCarrito" text="\$ 0.00" style="-fx-text-fill: #f5b041; -fx-font-weight: bold; -fx-font-size: 16px;"/>
+            </HBox>
+
+            <Button text="IR A PAGAR &gt;" maxWidth="Infinity" styleClass="button-primary" onAction="#handleIrACheckout"/>
+            <Button text="Omitir Confitería" maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8;" onAction="#handleIrACheckout"/>
+            <Button text="Volver al menú principal" maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8;" onAction="#handleMenuPrincipal"/>
+        </VBox>
+    </right>
+</BorderPane>

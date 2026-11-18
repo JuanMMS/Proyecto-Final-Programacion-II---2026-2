@@ -80,4 +80,9 @@ public class Cliente implements Autenticable {
     public void setCuenta(Cuenta cuenta) {
         this.cuenta = cuenta;
     }
+
+    @Override
+    public String toString() {
+        return nombreCompleto + " (" + (cuenta == null ? "sin usuario" : cuenta.getUsuario()) + ")";
+    }
 }

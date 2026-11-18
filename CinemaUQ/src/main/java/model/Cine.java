@@ -25,6 +25,7 @@ public class Cine {
 
     // LISTA CRÍTICA AGREGADA PARA LA CARTELERA (Integrante 2)
     private ArrayList<Pelicula> listPeliculas;
+    private ArrayList<Promocion> listPromociones;
 
     /**
      * Constructor privado con datos por defecto
@@ -41,6 +42,7 @@ public class Cine {
         this.listConfiterias = new ArrayList<>();
         this.listSalasCine = new ArrayList<>();
         this.listPeliculas = new ArrayList<>();
+        this.listPromociones = new ArrayList<>();
     }
 
     /**
@@ -104,6 +106,7 @@ public class Cine {
     public ArrayList<SalaCine> getListSalasCine() { return listSalasCine; }
     public void setListSalasCine(ArrayList<SalaCine> listSalasCine) { this.listSalasCine = listSalasCine; }
 
+    public ArrayList<Promocion> getListPromociones() { return listPromociones; }
     public ArrayList<Pelicula> getListPeliculas() { return listPeliculas; }
     public void setListPeliculas(ArrayList<Pelicula> listPeliculas) { this.listPeliculas = listPeliculas; }
 }

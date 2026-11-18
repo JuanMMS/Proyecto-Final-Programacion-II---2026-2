@@ -2487,9 +2487,7 @@ public class PruebasUnitariasTest {
         );
     }
 
-    // =========================================================
-    // SESION
-    // =========================================================
+
 
     @Test
     void debeManejarSesionComoSingleton() {

@@ -1,5 +1,5 @@
 
-package viewController;
+package viewcontroller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,8 +14,7 @@ import javafx.stage.Stage;
 import model.Cliente;
 import model.Administrador;
 import navegacion.Navegador;
-import service.AutenticacionService;
-import service.Sesion;
+import controller.LoginController;
 
 public class LoginViewController {
 
@@ -25,38 +24,18 @@ public class LoginViewController {
     @FXML private Button btnIniciarSesion;
     @FXML private Hyperlink linkRegistro;
 
-    private final AutenticacionService autenticacionService =
-            new AutenticacionService();
+    private final LoginController loginController = new LoginController();
 
     @FXML
     void handleIniciarSesion(ActionEvent event) {
 
-        String usuario = txtUsuario.getText().trim();
-        String contrasenia = txtContrasenia.getText();
-
-        if (usuario.isBlank() || contrasenia.isBlank()) {
-            mostrarAlerta(
-                    Alert.AlertType.WARNING,
-                    "Campos vacíos",
-                    "Ingresa tu usuario y contraseña."
-            );
+        Object usuarioAutenticado;
+        try {
+            usuarioAutenticado = loginController.iniciarSesion(txtUsuario.getText(), txtContrasenia.getText());
+        } catch (IllegalArgumentException ex) {
+            mostrarAlerta(Alert.AlertType.WARNING, "No se pudo iniciar sesión", ex.getMessage());
             return;
         }
-
-        Object usuarioAutenticado =
-                autenticacionService.autenticar(usuario, contrasenia);
-
-        if (usuarioAutenticado == null) {
-            mostrarAlerta(
-                    Alert.AlertType.ERROR,
-                    "Inicio de sesión fallido",
-                    "El usuario o la contraseña son incorrectos."
-            );
-            return;
-        }
-
-        // Guardar el usuario que inició sesión.
-        Sesion.getInstancia().iniciarSesion(usuarioAutenticado);
 
         Stage stage = (Stage) btnIniciarSesion
                 .getScene()

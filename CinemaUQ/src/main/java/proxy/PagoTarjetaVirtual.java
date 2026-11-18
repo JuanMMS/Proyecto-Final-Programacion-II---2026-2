@@ -26,6 +26,7 @@ public class PagoTarjetaVirtual implements MedioPago {
                 throw new IllegalStateException("Saldo insuficiente en la tarjeta virtual.");
             }
             tarjeta.setSaldo(tarjeta.getSaldo() - monto);
+            tarjeta.registrarMovimiento("Compra", "Pago de compra CinemaUQ", -monto);
         }
     }
 

@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewController.CheckoutViewController">
+<BorderPane stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewcontroller.CheckoutViewController">
 
     <top>
         <HBox alignment="CENTER_LEFT" style="-fx-background-color: #14141d; -fx-padding: 20 30;">
@@ -43,9 +43,9 @@
 
                 <!-- Opción 2: Redención de Puntos -->
                 <VBox spacing="10.0" style="-fx-background-color: #14141d; -fx-padding: 15; -fx-background-radius: 8;">
-                    <RadioButton fx:id="rbPuntos" text="Redimir Puntos CinemaUQ" toggleGroup="$grupoPago" style="-fx-text-fill: #f5b041; -fx-font-weight: bold;"/>
+                    <RadioButton fx:id="rbPuntos" text="Usar todos mis puntos CinemaUQ" toggleGroup="$grupoPago" style="-fx-text-fill: #f5b041; -fx-font-weight: bold;"/>
                     <Label fx:id="lblPuntosDisponibles" text="Puntos vigentes: 0 pts" styleClass="subtitle-text"/>
-                    <Label fx:id="lblCostoEnPuntos" text="Equivalencia requerida: 0 pts" styleClass="subtitle-text"/>
+                    <Label fx:id="lblCostoEnPuntos" text="Descuento al usar todos tus puntos: $ 0 (máximo: total de compra)" styleClass="subtitle-text"/>
                 </VBox>
 
                 <Region VBox.vgrow="ALWAYS"/>

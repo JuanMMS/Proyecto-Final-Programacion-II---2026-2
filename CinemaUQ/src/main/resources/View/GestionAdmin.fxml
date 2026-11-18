@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane stylesheets="@css/styles.css" style="-fx-background-color: #0d0d12;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewcontroller.GestionAdminViewController">
+
+    <!-- BARRA SUPERIOR -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: #14141d; -fx-padding: 15 25;">
+            <Label text="⚙️ Gestión Administrativa" style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="&lt; Volver al Dashboard" onAction="#volverDashboard" style="-fx-background-color: transparent; -fx-border-color: #3f3f4e; -fx-text-fill: #a0a0a8; -fx-cursor: hand;"/>
+            <Button text="Cerrar Sesión" onAction="#cerrarSesion" style="-fx-background-color: #2a2a35; -fx-text-fill: white; -fx-cursor: hand;"/>
+        </HBox>
+    </top>
+
+    <!-- ÁREA DE PESTAÑAS (TABS) -->
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE" style="-fx-background-color: #1a1a24;">
+
+            <!-- 1. PESTAÑA: PELÍCULAS Y FUNCIONES (Tu Responsabilidad) -->
+            <Tab text="🎬 Películas y Funciones">
+                <HBox spacing="30" style="-fx-padding: 20;">
+
+                    <!-- LADO IZQUIERDO: Formularios -->
+                    <VBox spacing="25" prefWidth="300">
+
+                        <!-- Formulario Nueva Película -->
+                        <VBox spacing="10">
+                            <Label text="Registrar Nueva Película" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;"/>
+                            <TextField fx:id="txtTituloPeli" promptText="Título de la película" style="-fx-background-color: #2a2a35; -fx-text-fill: white;"/>
+                            <TextField fx:id="txtDirectorPeli" promptText="Director" style="-fx-background-color: #2a2a35; -fx-text-fill: white;"/>
+                            <Button text="Guardar Película" onAction="#guardarPelicula" maxWidth="Infinity" style="-fx-background-color: #1a1a3a; -fx-border-color: #3f3f4e; -fx-text-fill: white;"/>
+                        </VBox>
+
+                        <!-- Formulario Programar Función -->
+                        <VBox spacing="10">
+                            <Label text="Programar Función" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;"/>
+                            <ComboBox fx:id="cmbPelicula" promptText="Seleccionar película" maxWidth="Infinity" style="-fx-background-color: #2a2a35; -fx-text-fill: white;"/>
+                            <ComboBox fx:id="cmbSala" promptText="Seleccionar sala" maxWidth="Infinity" style="-fx-background-color: #2a2a35; -fx-text-fill: white;"/>
+                            <DatePicker fx:id="dpFechaFuncion" promptText="Fecha de la función" maxWidth="Infinity" style="-fx-background-color: #2a2a35; -fx-text-fill: white; -fx-control-inner-background: #2a2a35;"/>
+                            <Label text="La fecha y hora deben ser legibles; hora en formato 24 h (HH:mm)." style="-fx-text-fill: #c7c7d1;" wrapText="true"/>
+                            <TextField fx:id="txtHoraFuncion" promptText="Hora (ej. 19:30)" style="-fx-background-color: #2a2a35; -fx-text-fill: white; -fx-prompt-text-fill: #b8b8c5;"/>
+                            <Button text="Programar Función" onAction="#programarFuncion" maxWidth="Infinity" style="-fx-background-color: #1a1a3a; -fx-border-color: #3f3f4e; -fx-text-fill: white;"/>
+                        </VBox>
+                    </VBox>
+
+                    <!-- LADO DERECHO: Tablas -->
+                    <VBox spacing="20" HBox.hgrow="ALWAYS">
+
+                        <!-- Tabla Películas -->
+                        <VBox spacing="10" VBox.vgrow="ALWAYS">
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="Películas registradas" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button text="Eliminar película" onAction="#eliminarPelicula" style="-fx-background-color: #2a2a35; -fx-text-fill: white;"/>
+                            </HBox>
+                            <TableView fx:id="tablaPeliculas" VBox.vgrow="ALWAYS" style="-fx-background-color: #8c8c9e;">
+                                <columns>
+                                    <TableColumn text="ID" prefWidth="50"/>
+                                    <TableColumn text="Título" prefWidth="250"/>
+                                    <TableColumn text="Director" prefWidth="150"/>
+                                    <TableColumn text="Funciones" prefWidth="100"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+
+                        <!-- Tabla Funciones -->
+                        <VBox spacing="10" VBox.vgrow="ALWAYS">
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="Funciones activas" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button text="Cancelar función (reembolso 100%)" onAction="#cancelarFuncion" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                            </HBox>
+                            <TableView fx:id="tablaFunciones" VBox.vgrow="ALWAYS" style="-fx-background-color: #8c8c9e;">
+                                <columns>
+                                    <TableColumn text="ID" prefWidth="50"/>
+                                    <TableColumn text="Película" prefWidth="200"/>
+                                    <TableColumn text="Sala" prefWidth="80"/>
+                                    <TableColumn text="Fecha" prefWidth="90"/>
+                                    <TableColumn text="Hora" prefWidth="70"/>
+                                    <TableColumn text="Asientos ocupados" prefWidth="120"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </VBox>
+                </HBox>
+            </Tab>
+
+            <!-- 2. SALAS Y ASIENTOS -->
+            <Tab text="🚪 Salas y Asientos">
+                <VBox spacing="12" style="-fx-padding: 20;">
+                    <Label text="Crear una sala y generar automáticamente sus asientos" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <TextField fx:id="txtNombreSala" promptText="Identificador (ej. 3)" prefWidth="180"/>
+                        <TextField fx:id="txtFilasSala" text="5" promptText="Filas" prefWidth="90"/>
+                        <TextField fx:id="txtColumnasSala" text="8" promptText="Columnas" prefWidth="90"/>
+                        <Button text="Crear sala" onAction="#crearSala" styleClass="button-primary"/>
+                        <Button text="Eliminar sala seleccionada" onAction="#eliminarSala"/>
+                    </HBox>
+                    <TableView fx:id="tablaSalas" VBox.vgrow="ALWAYS"/>
+                </VBox>
+            </Tab>
+
+            <!-- 3. PRODUCTOS Y COMBOS -->
+            <Tab text="🍿 Productos y Combos">
+                <VBox spacing="12" style="-fx-padding: 20;">
+                    <Label text="Inventario de confitería" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <HBox spacing="10">
+                        <TextField fx:id="txtNombreProducto" promptText="Nombre del producto" HBox.hgrow="ALWAYS"/>
+                        <ComboBox fx:id="cmbTipoProducto" promptText="Tipo" prefWidth="150"/>
+                        <TextField fx:id="txtPrecioProducto" promptText="Precio" prefWidth="120"/>
+                        <Button text="Agregar producto" onAction="#agregarProducto" styleClass="button-primary"/>
+                        <Button text="Eliminar seleccionado" onAction="#eliminarProducto"/>
+                    </HBox>
+                    <TableView fx:id="tablaProductos" VBox.vgrow="ALWAYS"/>
+                </VBox>
+            </Tab>
+
+            <!-- 4. PROMOCIONES -->
+            <Tab text="🏷️ Promociones">
+                <VBox spacing="12" style="-fx-padding: 20;">
+                    <Label text="Administrar códigos promocionales (registro y activación)" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <HBox spacing="10">
+                        <TextField fx:id="txtCodigoPromo" promptText="Código (ej. CINE10)" HBox.hgrow="ALWAYS"/>
+                        <TextField fx:id="txtPorcentajePromo" promptText="Descuento %" prefWidth="130"/>
+                        <Button text="Crear promoción" onAction="#crearPromocion" styleClass="button-primary"/>
+                        <Button text="Activar / desactivar" onAction="#alternarPromocion"/>
+                    </HBox>
+                    <TableView fx:id="tablaPromociones" VBox.vgrow="ALWAYS"/>
+                </VBox>
+            </Tab>
+
+            <!-- 5. CLIENTES Y COMPRAS -->
+            <Tab text="👥 Clientes y Compras">
+                <SplitPane dividerPositions="0.48">
+                    <VBox spacing="8" style="-fx-padding: 12;">
+                        <Label text="Clientes registrados" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                        <TableView fx:id="tablaClientes" VBox.vgrow="ALWAYS"/>
+                    </VBox>
+                    <VBox spacing="8" style="-fx-padding: 12;">
+                        <Label text="Historial global de compras" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                        <TableView fx:id="tablaComprasAdmin" VBox.vgrow="ALWAYS"/>
+                    </VBox>
+                </SplitPane>
+            </Tab>
+
+            <!-- 6. RECARGAS -->
+            <Tab text="💳 Recargar Tarjetas">
+                <VBox spacing="12" style="-fx-padding: 20;">
+                    <Label text="Acreditar saldo a la tarjeta virtual de un cliente" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <HBox spacing="10">
+                        <ComboBox fx:id="cmbClienteRecarga" promptText="Seleccionar cliente" prefWidth="280"/>
+                        <TextField fx:id="txtMontoRecargaAdmin" promptText="Monto a recargar" prefWidth="180"/>
+                        <Button text="Aprobar recarga" onAction="#recargarTarjeta" styleClass="button-primary"/>
+                    </HBox>
+                    <Label text="La operación quedará registrada en el historial de movimientos del cliente." styleClass="subtitle-text"/>
+                </VBox>
+            </Tab>
+
+            <!-- 7. REPORTES -->
+            <Tab text="📄 Reportes (TXT)">
+                <VBox spacing="12" style="-fx-padding: 20;">
+                    <Label text="Generador de reportes administrativos" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <HBox spacing="10">
+                        <Button text="Generar / actualizar reporte" onAction="#generarReporte" styleClass="button-primary"/>
+                        <Button text="Guardar como TXT" onAction="#guardarReporte"/>
+                    </HBox>
+                    <TextArea fx:id="txtReportePreview" editable="false" wrapText="false" promptText="El reporte aparecerá aquí..." VBox.vgrow="ALWAYS"/>
+                </VBox>
+            </Tab>
+        </TabPane>
+    </center>
+</BorderPane>

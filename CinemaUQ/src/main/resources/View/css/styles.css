@@ -1,0 +1,116 @@
+
+.root {
+    -fx-background-color: #0d0d12;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+
+.title-text {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.subtitle-text {
+    -fx-font-size: 14px;
+    -fx-text-fill: #a0a0a8;
+}
+
+.text-field, .password-field {
+    -fx-background-color: #1a1a24;
+    -fx-text-fill: #ffffff;
+    -fx-prompt-text-fill: #666677;
+    -fx-border-color: #2a2a35;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+}
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #f5b041; /* Acento dorado */
+}
+
+.button-primary {
+    -fx-background-color: #f5b041;
+    -fx-text-fill: #0d0d12;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+.button-primary:hover {
+    -fx-background-color: #ffc259;
+}
+
+
+.movie-card {
+    -fx-background-color: #1a1a24;
+    -fx-background-radius: 12px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 5);
+}
+
+
+.seat-button {
+    -fx-background-color: #3b2e5a; /* Morado base */
+    -fx-text-fill: white;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+.seat-button:hover {
+    -fx-background-color: #55437c;
+}
+.seat-button:selected {
+    -fx-background-color: #f5b041;
+    -fx-text-fill: #0d0d12;
+}
+.seat-button:disabled {
+    -fx-background-color: #2a2a35;
+    -fx-text-fill: #555555;
+}
+
+.dashboard-card {
+    -fx-background-color: #1a1a24;
+    -fx-background-radius: 12px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);
+}
+
+.kpi-title {
+    -fx-text-fill: #a0a0a8;
+    -fx-font-size: 14px;
+}
+
+.kpi-value {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.chart {
+    -fx-padding: 10px;
+}
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+.chart-vertical-grid-lines, .chart-horizontal-grid-lines {
+    -fx-stroke: #2a2a35;
+    -fx-stroke-dash-array: 5 5;
+}
+.axis {
+    -fx-tick-label-fill: #a0a0a8;
+}
+.axis-tick-mark, .axis-minor-tick-mark {
+    -fx-stroke: transparent;
+}
+.chart-title {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-text-fill: #a0a0a8;
+}
