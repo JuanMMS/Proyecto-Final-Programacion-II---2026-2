@@ -1,5 +1,6 @@
 package Factory.combos;
 
+import composite.Elemento;
 import decorator.ComplementoPalomita;
 import decorator.ConDulce;
 import decorator.ConSal;
@@ -29,4 +30,5 @@ public class Combo1 implements FabricaCombo {
     public Chocolatina crearChocolatina() {
         return new Chocolatina("Chocolatina con leche", 3000, TipoChocolatina.CONLECHE);
     }
+
 }

@@ -35,6 +35,7 @@
                         <Button text="Programar Función" maxWidth="Infinity" styleClass="button-primary" onAction="#handleCrearFuncion"/>
                     </VBox>
 
+<<<<<<< Updated upstream
                     <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                         <HBox alignment="CENTER_LEFT">
                             <Label text="Funciones Activas" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
@@ -50,6 +51,46 @@
                                 <TableColumn fx:id="colHoraFunc" text="Hora" prefWidth="100.0"/>
                             </columns>
                         </TableView>
+=======
+                    <!-- LADO DERECHO: Tablas -->
+                    <VBox spacing="20" HBox.hgrow="ALWAYS">
+
+                        <!-- Tabla Películas -->
+                        <VBox spacing="10" VBox.vgrow="ALWAYS">
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="Películas registradas" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button text="Eliminar película" onAction="#eliminarPelicula" style="-fx-background-color: #2a2a35; -fx-text-fill: white;"/>
+                            </HBox>
+                            <TableView fx:id="tablaPeliculas" VBox.vgrow="ALWAYS" style="-fx-background-color: #8c8c9e;">
+                                <columns>
+                                    <TableColumn text="ID" prefWidth="50"/>
+                                    <TableColumn text="Título" prefWidth="250"/>
+                                    <TableColumn text="Director" prefWidth="150"/>
+                                    <TableColumn text="Funciones" prefWidth="100"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+
+                        <!-- Tabla Funciones -->
+                        <VBox spacing="10" VBox.vgrow="ALWAYS">
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="Funciones activas" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button text="Cancelar función (política de reembolso)" onAction="#cancelarFuncion" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                            </HBox>
+                            <TableView fx:id="tablaFunciones" VBox.vgrow="ALWAYS" style="-fx-background-color: #8c8c9e;">
+                                <columns>
+                                    <TableColumn text="ID" prefWidth="50"/>
+                                    <TableColumn text="Película" prefWidth="200"/>
+                                    <TableColumn text="Sala" prefWidth="80"/>
+                                    <TableColumn text="Fecha" prefWidth="90"/>
+                                    <TableColumn text="Hora" prefWidth="70"/>
+                                    <TableColumn text="Asientos ocupados" prefWidth="120"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+>>>>>>> Stashed changes
                     </VBox>
                 </HBox>
             </Tab>
