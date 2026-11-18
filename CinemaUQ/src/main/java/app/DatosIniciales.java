@@ -107,7 +107,6 @@ public final class DatosIniciales {
         }
 
 
-// SEGUNDA PELICULA: LA ODISEA
 
 
         boolean existeOdisea = cine.getListPeliculas()
