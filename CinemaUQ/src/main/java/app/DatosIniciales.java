@@ -159,57 +159,5 @@ public final class DatosIniciales {
         }
 
 
-
-
-
-        boolean existeOdisea = cine.getListPeliculas()
-                .stream()
-                .anyMatch(p -> p.getIdPelicula().equals("PEL-002"));
-
-        if (!existeOdisea) {
-
-            Pelicula pelicula2 = new Pelicula(
-                    "PEL-002",
-                    "La Odisea",
-                    "Christopher Nolan"
-            );
-
-            // Crear sala 2
-            SalaCine sala2 = new SalaCine("2");
-
-            // Crear 40 asientos
-            for (int fila = 0; fila < 5; fila++) {
-
-                char letra = (char) ('A' + fila);
-
-                for (int numero = 1; numero <= 8; numero++) {
-
-                    sala2.agregarAsiento(
-                            new Asiento(
-                                    letra + String.valueOf(numero),
-                                    sala2
-                            )
-                    );
-                }
-            }
-
-            // Crear función
-            FuncionPelicula funcion2 = new FuncionPelicula(
-                    "FUN-002",
-                    LocalDate.now().plusDays(1),
-                    LocalTime.of(21, 0),
-                    sala2,
-                    pelicula2
-            );
-
-            pelicula2.agregarFuncion(funcion2);
-            sala2.agregarFuncion(funcion2);
-
-            // Registrar sala y película
-            cine.agregarSala(sala2);
-            cine.agregarPelicula(pelicula2);
-        }
-
-        cargados = true;
     }
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewcontroller.CheckoutViewController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" style="-fx-background-color: #14141d; -fx-padding: 20 30;">
+            <Label text="💳 Finalizar Compra" styleClass="title-text" style="-fx-font-size: 22px;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <HBox spacing="30.0" alignment="CENTER" style="-fx-padding: 40;">
+
+            <!-- Resumen de la orden -->
+            <VBox spacing="15.0" styleClass="dashboard-card" prefWidth="400.0">
+                <Label text="Detalle de la Orden" style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+                <TextArea fx:id="txtDetalleOrden" editable="false" prefHeight="250.0" style="-fx-control-inner-background: #0d0d12; -fx-text-fill: white;"/>
+                <HBox>
+                    <Label text="Total a Pagar:" style="-fx-text-fill: white; -fx-font-size: 18px;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="lblTotalPagar" text="\$ 0.00" style="-fx-text-fill: #f5b041; -fx-font-size: 22px; -fx-font-weight: bold;"/>
+                </HBox>
+                <Label fx:id="lblPuntosGanados" text="Con esta compra ganarás: 0 pts ⭐️" style="-fx-text-fill: #4caf50;"/>
+            </VBox>
+
+            <!-- Métodos de Pago -->
+            <VBox spacing="20.0" styleClass="dashboard-card" prefWidth="400.0">
+                <Label text="Método de Pago" style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+                <!-- Opción 1: Tarjeta Virtual (Proxy) -->
+                <VBox spacing="10.0" style="-fx-background-color: #14141d; -fx-padding: 15; -fx-background-radius: 8;">
+                    <RadioButton fx:id="rbTarjetaVirtual" text="Tarjeta Virtual CinemaUQ" selected="true" style="-fx-text-fill: white; -fx-font-weight: bold;">
+                        <toggleGroup>
+                            <ToggleGroup fx:id="grupoPago"/>
+                        </toggleGroup>
+                    </RadioButton>
+                    <Label fx:id="lblSaldoDisponible" text="Saldo disponible: $ 0.00" styleClass="subtitle-text"/>
+                    <PasswordField fx:id="txtContraseniaConfirmacion" promptText="Confirma tu contraseña para autorizar" styleClass="password-field"/>
+                </VBox>
+
+                <!-- Opción 2: Redención de Puntos -->
+                <VBox spacing="10.0" style="-fx-background-color: #14141d; -fx-padding: 15; -fx-background-radius: 8;">
+                    <RadioButton fx:id="rbPuntos" text="Redimir Puntos CinemaUQ" toggleGroup="$grupoPago" style="-fx-text-fill: #f5b041; -fx-font-weight: bold;"/>
+                    <Label fx:id="lblPuntosDisponibles" text="Puntos vigentes: 0 pts" styleClass="subtitle-text"/>
+                    <Label fx:id="lblCostoEnPuntos" text="Equivalencia requerida: 0 pts" styleClass="subtitle-text"/>
+                </VBox>
+
+                <Region VBox.vgrow="ALWAYS"/>
+                <Button fx:id="btnConfirmarPago" text="CONFIRMAR Y PAGAR" maxWidth="Infinity" styleClass="button-primary" onAction="#handleConfirmarPago"/>
+                <Button text="Cancelar y Volver" maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: #f44336;" onAction="#handleCancelar"/>
+            </VBox>
+        </HBox>
+    </center>
+</BorderPane>

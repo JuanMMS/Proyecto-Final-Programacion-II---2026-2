@@ -1,4 +1,4 @@
-package viewController;
+package viewcontroller;
 
 import composite.Elemento;
 import decorator.ComplementoPalomita;

@@ -1,5 +1,5 @@
 
-package viewController;
+package viewcontroller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

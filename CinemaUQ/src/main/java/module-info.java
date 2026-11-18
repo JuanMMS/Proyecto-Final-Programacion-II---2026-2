@@ -29,8 +29,8 @@ module CinemaUQ {
     opens proxy to javafx.fxml;
     exports proxy;
 
-    opens viewController to javafx.fxml;
-    exports viewController;
+    opens viewcontroller to javafx.fxml;
+    exports viewcontroller;
 
     opens controller to javafx.fxml;
     exports controller;

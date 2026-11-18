@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<BorderPane stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewcontroller.AsientosViewController">
+
+    <!-- Encabezado con información de la función -->
+    <top>
+        <HBox alignment="CENTER" spacing="30.0" style="-fx-background-color: #14141d; -fx-padding: 20;">
+            <Label fx:id="lblPelicula" text="🎬 Beyond Horizons" styleClass="title-text" style="-fx-font-size: 20px;"/>
+            <Label fx:id="lblFechaHora" text="📅 Vie 22 Nov - 7:15 PM" styleClass="subtitle-text" style="-fx-font-size: 16px;"/>
+            <Label fx:id="lblSala" text="🚪 Sala 2" styleClass="subtitle-text" style="-fx-font-size: 16px;"/>
+        </HBox>
+    </top>
+
+    <!-- Matriz de asientos (PANTALLA) -->
+    <center>
+        <VBox alignment="CENTER" spacing="30.0" style="-fx-padding: 40;">
+            <!-- Representación de la pantalla -->
+            <VBox alignment="CENTER" spacing="5.0">
+                <QuadCurve controlX="-100.0" controlY="-30.0" endX="200.0" endY="0.0" fill="transparent" startX="-400.0" startY="0.0" stroke="#f5b041" strokeWidth="3.0" />
+                <Label text="PANTALLA" style="-fx-text-fill: #555555; -fx-letter-spacing: 5px;"/>
+            </VBox>
+
+            <!-- GridPane donde el Controller inyectará los ToggleButtons de los asientos -->
+            <GridPane fx:id="gridAsientos" alignment="CENTER" hgap="10.0" vgap="10.0">
+                <!-- El controlador llenará esto dinámicamente, pero se vería así: -->
+                <!-- <ToggleButton text="A1" styleClass="seat-button" GridPane.columnIndex="1" GridPane.rowIndex="1"/> -->
+            </GridPane>
+
+            <!-- Leyenda de colores -->
+            <HBox alignment="CENTER" spacing="20.0" style="-fx-padding: 20 0 0 0;">
+                <HBox alignment="CENTER" spacing="5.0"><Circle radius="8" fill="#3b2e5a"/><Label text="Disponible" styleClass="subtitle-text"/></HBox>
+                <HBox alignment="CENTER" spacing="5.0"><Circle radius="8" fill="#f5b041"/><Label text="Seleccionado" styleClass="subtitle-text"/></HBox>
+                <HBox alignment="CENTER" spacing="5.0"><Circle radius="8" fill="#2a2a35"/><Label text="Ocupado" styleClass="subtitle-text"/></HBox>
+            </HBox>
+        </VBox>
+    </center>
+
+    <!-- Resumen de compra lateral derecho -->
+    <right>
+        <VBox spacing="15.0" prefWidth="300.0" style="-fx-background-color: #14141d; -fx-padding: 25;">
+            <Label text="Resumen de Selección" styleClass="title-text" style="-fx-font-size: 18px;"/>
+
+            <Label text="Asientos seleccionados:" styleClass="subtitle-text"/>
+            <FlowPane fx:id="flowAsientosSeleccionados" hgap="5.0" vgap="5.0">
+                <!-- Se llenará dinámicamente con etiquetas tipo badge -->
+            </FlowPane>
+
+            <Separator style="-fx-background-color: #2a2a35;"/>
+
+            <HBox>
+                <Label text="Subtotal:" styleClass="subtitle-text" HBox.hgrow="ALWAYS"/>
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="lblSubtotal" text="\$0.00" style="-fx-text-fill: white;"/>
+            </HBox>
+
+            <HBox style="-fx-padding: 10 0 20 0;">
+                <Label text="TOTAL:" style="-fx-text-fill: #f5b041; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="lblTotal" text="\$0.00" style="-fx-text-fill: #f5b041; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+            </HBox>
+
+            <Button fx:id="btnContinuar" text="🔒 CONTINUAR AL PAGO" maxWidth="Infinity" styleClass="button-primary" onAction="#handleContinuarPago"/>
+            <Button text="&lt; VOLVER" maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8; -fx-border-color: #2a2a35; -fx-border-radius: 8;" onAction="#handleVolver"/>
+        </VBox>
+    </right>
+</BorderPane>

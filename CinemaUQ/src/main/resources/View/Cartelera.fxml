@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
+<BorderPane stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewcontroller.CarteleraViewController">
+
+    <!-- Barra superior de navegación -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-background-color: #14141d; -fx-padding: 15 30;">
+            <ImageView fitHeight="40.0" preserveRatio="true">
+                <image>
+                    <Image url="@images/logo_cinemauq_small.png" />
+                </image>
+            </ImageView>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="lblPuntos" text="Mis Puntos: 0 pts ⭐️" style="-fx-text-fill: #f5b041; -fx-font-weight: bold;"/>
+            <Label fx:id="lblUsuario" text="Hola, Cliente" styleClass="subtitle-text"/>
+            <Button text="Mi Perfil" onAction="#handleIrPerfil" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 5;"/>
+        </HBox>
+    </top>
+
+    <!-- Contenido principal -->
+    <center>
+        <VBox spacing="20.0" style="-fx-padding: 30;">
+            <Label text="Películas en Cartelera" styleClass="title-text"/>
+
+            <!-- Contenedor scrolleable para las películas -->
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: #0d0d12;">
+                <!-- FlowPane permite que las películas bajen de línea automáticamente -->
+                <FlowPane fx:id="contenedorPeliculas" hgap="25.0" vgap="25.0">
+
+                    <!-- Ejemplo de cómo se vería UNA tarjeta de película generada desde el controlador -->
+                    <VBox spacing="10.0" styleClass="movie-card" maxWidth="220.0">
+                        <ImageView fitWidth="200.0" fitHeight="300.0" preserveRatio="false" style="-fx-background-radius: 10;">
+                            <image>
+                                <Image url="@images/poster_placeholder.png" />
+                            </image>
+                        </ImageView>
+                        <Label text="Interstellar" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>
+                        <Label text="Ficción / 120 min" styleClass="subtitle-text"/>
+                        <Button text="Ver Funciones" maxWidth="Infinity" styleClass="button-primary"/>
+                    </VBox>
+                    <!-- Fin de ejemplo -->
+
+                </FlowPane>
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>
