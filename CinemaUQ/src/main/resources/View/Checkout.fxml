@@ -43,9 +43,9 @@
 
                 <!-- Opción 2: Redención de Puntos -->
                 <VBox spacing="10.0" style="-fx-background-color: #14141d; -fx-padding: 15; -fx-background-radius: 8;">
-                    <RadioButton fx:id="rbPuntos" text="Redimir Puntos CinemaUQ" toggleGroup="$grupoPago" style="-fx-text-fill: #f5b041; -fx-font-weight: bold;"/>
+                    <RadioButton fx:id="rbPuntos" text="Usar todos mis puntos CinemaUQ" toggleGroup="$grupoPago" style="-fx-text-fill: #f5b041; -fx-font-weight: bold;"/>
                     <Label fx:id="lblPuntosDisponibles" text="Puntos vigentes: 0 pts" styleClass="subtitle-text"/>
-                    <Label fx:id="lblCostoEnPuntos" text="Cada punto descuenta $10. Puedes combinar puntos y tarjeta." styleClass="subtitle-text" wrapText="true"/>
+                    <Label fx:id="lblCostoEnPuntos" text="Se redimen todos los puntos vigentes disponibles en la compra completa. Si superan el total, el pago queda en $ 0." styleClass="subtitle-text" wrapText="true"/>
                 </VBox>
 
                 <Region VBox.vgrow="ALWAYS"/>

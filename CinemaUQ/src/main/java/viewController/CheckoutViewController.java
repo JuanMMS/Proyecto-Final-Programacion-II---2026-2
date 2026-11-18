@@ -41,10 +41,11 @@ public class CheckoutViewController {
         lblSaldoDisponible.setText("Saldo disponible: " + moneda(cuenta.getTheTarjetaVirtualCliente().getSaldo()));
         int puntos = checkoutController.obtenerPuntosDisponibles();
         lblPuntosDisponibles.setText("Puntos vigentes: " + puntos + " pts");
-        lblCostoEnPuntos.setText("Equivalencia: " + (int)Math.ceil(total / CuentaPuntos.VALOR_PUNTO) + " pts");
+        double descuentoConPuntos = Math.min(total, puntos * CuentaPuntos.VALOR_PUNTO);
+        lblCostoEnPuntos.setText("Descuento al usar todos tus puntos: " + moneda(descuentoConPuntos) + " (máximo: total de compra)");
         lblPuntosGanados.setText("Con esta compra ganarás: " + CuentaPuntos.puntosPorValor(total) + " pts ⭐");
-        rbPuntos.setDisable(puntos <= 0 || (int)Math.floor(total / CuentaPuntos.VALOR_PUNTO) <= 0);
-        rbPuntos.setText("Redimir puntos (" + Math.min(puntos, (int)Math.floor(total / CuentaPuntos.VALOR_PUNTO)) + " pts máx.)");
+        rbPuntos.setDisable(puntos <= 0);
+        rbPuntos.setText("Usar todos mis puntos (" + puntos + " pts)");
     }
     @FXML private void handleConfirmarPago(ActionEvent event) {
         if (!rbTarjetaVirtual.isSelected() && !rbPuntos.isSelected()) { alerta(Alert.AlertType.INFORMATION, "Selecciona un medio de pago."); return; }
@@ -54,8 +55,10 @@ public class CheckoutViewController {
             Alert confirmacion = new Alert(Alert.AlertType.INFORMATION);
             confirmacion.setTitle("Compra realizada");
             confirmacion.setHeaderText("¡Tu pago fue aprobado!");
-            double descuento = puntosUsar * CuentaPuntos.VALOR_PUNTO;
-            confirmacion.setContentText("Total: " + moneda(total - descuento) + (descuento > 0 ? "\nDescuento por puntos: " + moneda(descuento) : ""));
+            double descuento = Math.min(total, puntosUsar * CuentaPuntos.VALOR_PUNTO);
+            confirmacion.setContentText("Total: " + moneda(Math.max(0, total - descuento))
+                    + (descuento > 0 ? "\nDescuento por puntos: " + moneda(descuento)
+                    + "\nPuntos utilizados: " + puntosUsar : ""));
             confirmacion.showAndWait();
             new Navegador((Stage)btnConfirmarPago.getScene().getWindow()).navegar("Cartelera.fxml");
         } catch (RuntimeException ex) { alerta(Alert.AlertType.ERROR, ex.getMessage()); }

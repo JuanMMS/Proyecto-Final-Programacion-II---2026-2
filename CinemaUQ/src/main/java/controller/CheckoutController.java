@@ -22,8 +22,13 @@ public class CheckoutController {
     public List<Elemento> obtenerElementos() { return flujo.getCarrito().getElementos(); }
     public double obtenerTotal() { return flujo.getCarrito().getPrecio(); }
     public int obtenerPuntosDisponibles() { return CuentaPuntos.puntosDisponibles(obtenerCuenta(), LocalDate.now()); }
+    /**
+     * Los puntos se redimen únicamente al confirmar la compra completa del carrito.
+     * No se limita la cantidad por el valor de la compra: se pueden usar todos los
+     * puntos vigentes de la cuenta. El descuento monetario nunca supera el total.
+     */
     public int calcularPuntosRedimibles(double total) {
-        return Math.min(obtenerPuntosDisponibles(), (int)Math.floor(total / CuentaPuntos.VALOR_PUNTO));
+        return total > 0 ? Math.max(0, obtenerPuntosDisponibles()) : 0;
     }
     public void confirmarPago(String contrasenia, boolean redimirPuntos, double total) {
         int puntos = redimirPuntos ? calcularPuntosRedimibles(total) : 0;

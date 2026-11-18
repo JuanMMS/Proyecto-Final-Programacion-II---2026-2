@@ -48,11 +48,14 @@ public class CompraFachada implements Fachada {
                 }
             }
         }
-        double descuento = puntosARedimir * CuentaPuntos.VALOR_PUNTO;
         if (puntosARedimir < 0 || puntosARedimir > CuentaPuntos.puntosDisponibles(cuenta, LocalDate.now()))
             throw new IllegalStateException("No tienes suficientes puntos vigentes.");
-        if (descuento > valorTotal) throw new IllegalArgumentException("Los puntos no pueden cubrir un valor superior a la compra.");
-        double valorTarjeta = valorTotal - descuento;
+        if (puntosARedimir > 0 && (funcion == null || carrito.getElementos().stream().noneMatch(model.Entrada.class::isInstance)))
+            throw new IllegalStateException("Los puntos solo se pueden redimir en una compra completa que incluya entradas.");
+        // Se pueden redimir todos los puntos disponibles en la compra completa.
+        // El descuento efectivo se topa al total para impedir pagos negativos.
+        double descuento = Math.min(valorTotal, puntosARedimir * CuentaPuntos.VALOR_PUNTO);
+        double valorTarjeta = Math.max(0, valorTotal - descuento);
         // consultarSaldo también valida las credenciales cuando los puntos cubren todo el total.
         pago.consultarSaldo();
         if (valorTarjeta > 0) pago.pagar(valorTarjeta);
