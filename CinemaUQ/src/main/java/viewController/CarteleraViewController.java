@@ -49,6 +49,11 @@ public class CarteleraViewController {
         }
     }
     @FXML private void handleIrPerfil(javafx.event.ActionEvent e) { navegar((javafx.scene.Node)e.getSource(), "PerfilCliente.fxml"); }
+    @FXML private void handleCerrarSesion(javafx.event.ActionEvent e) {
+        Sesion.getInstancia().cerrarSesion();
+        FlujoCompra.getInstancia().reiniciar();
+        navegar((javafx.scene.Node)e.getSource(), "Login.fxml");
+    }
     private void navegar(javafx.scene.Node nodo, String fxml) { new Navegador((javafx.stage.Stage)nodo.getScene().getWindow()).navegar(fxml); }
     private void alerta(String mensaje) { new Alert(Alert.AlertType.INFORMATION, mensaje).showAndWait(); }
 }

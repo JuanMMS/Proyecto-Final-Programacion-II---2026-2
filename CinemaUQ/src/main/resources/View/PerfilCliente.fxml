@@ -9,7 +9,8 @@
         <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-background-color: #14141d; -fx-padding: 20 30;">
             <Label text="👤 Mi Perfil CinemaUQ" styleClass="title-text" style="-fx-font-size: 22px;"/>
             <Region HBox.hgrow="ALWAYS"/>
-            <Button text="&lt; Volver a Cartelera" styleClass="button-primary" onAction="#handleVolverCartelera"/>
+            <Button text="&lt; Menú principal" styleClass="button-primary" onAction="#handleVolverCartelera"/>
+            <Button text="Cerrar sesión" style="-fx-background-color: #2a2a35; -fx-text-fill: white;" onAction="#handleCerrarSesion"/>
         </HBox>
     </top>
 
@@ -26,12 +27,8 @@
                             <Label fx:id="lblIdTarjeta" text="Tarjeta #0000" styleClass="subtitle-text"/>
                         </VBox>
                         <VBox styleClass="dashboard-card" HBox.hgrow="ALWAYS" spacing="10.0">
-                            <Label text="Solicitar Recarga de Saldo" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
-                            <Label text="Nota: La recarga se acredita inmediatamente en esta versión de demostración." styleClass="subtitle-text"/>
-                            <HBox spacing="10.0">
-                                <TextField fx:id="txtMontoRecarga" promptText="Monto a recargar (ej. 50000)" styleClass="text-field" HBox.hgrow="ALWAYS"/>
-                                <Button text="Solicitar Recarga" styleClass="button-primary" onAction="#handleSolicitarRecarga"/>
-                            </HBox>
+                            <Label text="Recargas de saldo" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                            <Label text="Por seguridad, las recargas solo pueden ser realizadas y aprobadas por un administrador. Solicita la recarga directamente al administrador del cine." styleClass="subtitle-text" wrapText="true"/>
                         </VBox>
                     </HBox>
 
@@ -60,6 +57,7 @@
                             <TableColumn fx:id="colFechaCompra" text="Fecha Compra" prefWidth="150.0"/>
                             <TableColumn fx:id="colDetalleCompra" text="Detalle" prefWidth="300.0"/>
                             <TableColumn fx:id="colTotalCompra" text="Valor Pagado" prefWidth="150.0"/>
+                            <TableColumn fx:id="colEstadoCompra" text="Estado" prefWidth="100.0"/>
                         </columns>
                     </TableView>
                 </VBox>

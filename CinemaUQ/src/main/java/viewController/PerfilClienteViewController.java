@@ -23,7 +23,7 @@ public class PerfilClienteViewController {
     @FXML private TableView<CuentaPuntos> tablaPuntos;
     @FXML private TableColumn<MovimientoTarjeta,String> colFechaMov, colTipoMov;
     @FXML private TableColumn<MovimientoTarjeta,Number> colMontoMov;
-    @FXML private TableColumn<Compra,String> colIdCompra, colFechaCompra, colDetalleCompra;
+    @FXML private TableColumn<Compra,String> colIdCompra, colFechaCompra, colDetalleCompra, colEstadoCompra;
     @FXML private TableColumn<Compra,Number> colTotalCompra;
     @FXML private TableColumn<CuentaPuntos,Number> colCantidadPuntos;
     @FXML private TableColumn<CuentaPuntos,String> colFechaObtencion, colFechaVencimiento, colEstadoPuntos;
@@ -52,6 +52,7 @@ public class PerfilClienteViewController {
                 v.getValue().getTheCompraCarrito().getElementos().stream().map(Elemento -> Elemento.getNombre()).reduce((a,b) -> a + ", " + b).orElse("Sin detalle")));
         colTotalCompra.setCellValueFactory(v -> new SimpleDoubleProperty(v.getValue().getValorPagado()));
         colTotalCompra.setCellFactory(col -> monedaCell());
+        colEstadoCompra.setCellValueFactory(v -> new SimpleStringProperty(v.getValue().isCancelada() ? "Cancelada" : "Pagada"));
         colCantidadPuntos.setCellValueFactory(v -> new SimpleIntegerProperty(v.getValue().getPuntos()));
         colFechaObtencion.setCellValueFactory(v -> new SimpleStringProperty(String.valueOf(v.getValue().getFechaObtencion())));
         colFechaVencimiento.setCellValueFactory(v -> new SimpleStringProperty(String.valueOf(v.getValue().getFechaVencimiento())));
@@ -86,21 +87,16 @@ public class PerfilClienteViewController {
     }
 
     @FXML private void handleSolicitarRecarga(ActionEvent event) {
-        if (cliente == null) return;
-        try {
-            double monto = Double.parseDouble(txtMontoRecarga.getText().trim());
-            if (!Double.isFinite(monto) || monto <= 0) throw new NumberFormatException();
-            TarjetaVirtual tarjeta = cliente.getCuenta().getTheTarjetaVirtualCliente();
-            tarjeta.setSaldo(tarjeta.getSaldo() + monto);
-            tarjeta.registrarMovimiento("Recarga", "Recarga de saldo solicitada por el cliente", monto);
-            txtMontoRecarga.clear(); refrescarDatos();
-            alerta(Alert.AlertType.INFORMATION, "Recarga aplicada correctamente.");
-        } catch (NumberFormatException ex) { alerta(Alert.AlertType.WARNING, "Ingresa un monto numérico mayor que cero."); }
+        alerta(Alert.AlertType.INFORMATION, "Las recargas solo pueden ser realizadas y aprobadas por un administrador. Acércate al administrador para solicitarla.");
     }
 
     @FXML private void handleSolicitarReembolso(ActionEvent event) {
         Compra compra = tablaCompras.getSelectionModel().getSelectedItem();
         if (compra == null) { alerta(Alert.AlertType.WARNING, "Selecciona una compra."); return; }
+        if (compra.isCancelada()) { alerta(Alert.AlertType.WARNING, "Esta compra ya está cancelada."); return; }
+        if (!compra.puedeCancelarse(java.time.LocalDateTime.now())) { alerta(Alert.AlertType.WARNING, "Esta compra ya no se puede cancelar porque la función inició o no tiene una función válida."); return; }
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION, "¿Deseas cancelar esta compra? El reembolso se calculará según el tiempo restante para la función.", ButtonType.CANCEL, ButtonType.OK);
+        if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
         try {
             double monto = compra.cancelar(java.time.LocalDateTime.now());
             refrescarDatos();
@@ -110,6 +106,10 @@ public class PerfilClienteViewController {
 
     @FXML private void handleVolverCartelera(ActionEvent event) {
         new Navegador((Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow()).navegar("Cartelera.fxml");
+    }
+    @FXML private void handleCerrarSesion(ActionEvent event) {
+        Sesion.getInstancia().cerrarSesion();
+        new Navegador((Stage)((javafx.scene.Node)event.getSource()).getScene().getWindow()).navegar("Login.fxml");
     }
     private void mostrarVacio(String texto) {
         if (tablaCompras != null) tablaCompras.setPlaceholder(new Label(texto));

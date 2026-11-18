@@ -74,6 +74,10 @@ public class ConfiteriaViewController {
         flujo.getCarrito().agregar(producto);
         refrescarCarrito();
     }
+    @FXML private void handleMenuPrincipal(ActionEvent e) {
+        flujo.reiniciar();
+        new Navegador((Stage)((javafx.scene.Node)e.getSource()).getScene().getWindow()).navegar("Cartelera.fxml");
+    }
     @FXML private void handleIrACheckout(ActionEvent e) {
         if (flujo.getFuncion() == null || flujo.getAsientos().isEmpty()) { alerta("Primero selecciona una función y tus asientos."); return; }
         new Navegador((Stage)((javafx.scene.Node)e.getSource()).getScene().getWindow()).navegar("Checkout.fxml");

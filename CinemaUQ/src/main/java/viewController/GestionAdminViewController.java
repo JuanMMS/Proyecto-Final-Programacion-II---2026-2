@@ -19,6 +19,9 @@ import java.nio.file.Files;
 import java.time.LocalTime;
 import java.util.Locale;
 import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GestionAdminViewController {
     @FXML private TextField txtTituloPeli, txtDirectorPeli, txtHoraFuncion;
@@ -39,12 +42,23 @@ public class GestionAdminViewController {
     @FXML private TextField txtMontoRecargaAdmin;
     @FXML private TableView<Cliente> tablaClientes;
     @FXML private TextArea txtReportePreview;
+    private static int ultimoIdPelicula = 0;
+    private static int ultimoIdFuncion = 0;
 
     @FXML public void initialize() {
         configurarTablaPeliculas(); configurarTablaFunciones(); configurarTablaSalas();
         configurarTablaProductos(); configurarTablaPromos(); configurarTablaCompras(); configurarTablaClientes();
         cmbTipoProducto.getItems().setAll("Palomitas", "Gaseosa", "Chocolatina");
+        configurarTextoFormularioFuncion();
         refrescar();
+    }
+
+    private void configurarTextoFormularioFuncion() {
+        cmbPelicula.setButtonCell(new ListCell<>() { @Override protected void updateItem(Pelicula item, boolean empty) { super.updateItem(item, empty); setText(empty || item == null ? "Seleccionar película" : item.getNombre()); setStyle("-fx-text-fill: white; -fx-background-color: #2a2a35;"); }});
+        cmbPelicula.setCellFactory(list -> new ListCell<>() { @Override protected void updateItem(Pelicula item, boolean empty) { super.updateItem(item, empty); setText(empty || item == null ? null : item.getNombre()); setStyle("-fx-text-fill: white; -fx-background-color: #2a2a35;"); }});
+        cmbSala.setButtonCell(new ListCell<>() { @Override protected void updateItem(SalaCine item, boolean empty) { super.updateItem(item, empty); setText(empty || item == null ? "Seleccionar sala" : item.getIdSalaCine()); setStyle("-fx-text-fill: white; -fx-background-color: #2a2a35;"); }});
+        cmbSala.setCellFactory(list -> new ListCell<>() { @Override protected void updateItem(SalaCine item, boolean empty) { super.updateItem(item, empty); setText(empty || item == null ? null : item.getIdSalaCine()); setStyle("-fx-text-fill: white; -fx-background-color: #2a2a35;"); }});
+        dpFechaFuncion.getEditor().setStyle("-fx-text-fill: white; -fx-prompt-text-fill: #b8b8c5; -fx-background-color: #2a2a35;");
     }
 
     private void configurarTablaPeliculas() {
@@ -117,7 +131,8 @@ public class GestionAdminViewController {
         String titulo = valor(txtTituloPeli), director = valor(txtDirectorPeli);
         if (titulo.isBlank() || director.isBlank()) { alerta("Completa título y director."); return; }
         if (Cine.getInstancia().getListPeliculas().stream().anyMatch(p -> p.getNombre().equalsIgnoreCase(titulo))) { alerta("Ya existe una película con ese título."); return; }
-        Cine.getInstancia().agregarPelicula(new Pelicula(UUID.randomUUID().toString(),titulo,director)); txtTituloPeli.clear(); txtDirectorPeli.clear(); refrescar();
+        String id = siguienteId("PEL-", Cine.getInstancia().getListPeliculas().stream().map(Pelicula::getIdPelicula).toList());
+        Cine.getInstancia().agregarPelicula(new Pelicula(id,titulo,director)); txtTituloPeli.clear(); txtDirectorPeli.clear(); refrescar(); alerta("Película creada con ID " + id);
     }
     @FXML private void eliminarPelicula(ActionEvent e) {
         Pelicula p = tablaPeliculas.getSelectionModel().getSelectedItem();
@@ -131,16 +146,27 @@ public class GestionAdminViewController {
         try {
             LocalTime hora = LocalTime.parse(valor(txtHoraFuncion));
             if (dpFechaFuncion.getValue().isBefore(java.time.LocalDate.now())) { alerta("La fecha no puede estar en el pasado."); return; }
-            FuncionPelicula f = new FuncionPelicula(UUID.randomUUID().toString(),dpFechaFuncion.getValue(),hora,s,p);
-            p.agregarFuncion(f); s.agregarFuncion(f); refrescar(); alerta("Función programada.");
+            String id = siguienteId("FUN-", Cine.getInstancia().getListSalasCine().stream().flatMap(sala -> sala.getListFuncionesPelicula().stream()).map(FuncionPelicula::getId).toList());
+            FuncionPelicula f = new FuncionPelicula(id,dpFechaFuncion.getValue(),hora,s,p);
+            p.agregarFuncion(f); s.agregarFuncion(f); refrescar(); alerta("Función programada con ID " + id + ".");
         } catch (RuntimeException ex) { alerta("La hora debe tener formato HH:mm."); }
     }
     @FXML private void cancelarFuncion(ActionEvent e) {
         FuncionPelicula f = tablaFunciones.getSelectionModel().getSelectedItem();
         if (f == null) { alerta("Selecciona una función."); return; }
-        if (!f.getAsientosOcupados().isEmpty()) { alerta("Esta función ya tiene entradas vendidas. Gestiona primero las compras asociadas."); return; }
-        f.notificarObservadores("La función " + f + " fue cancelada por el cine.");
-        f.getTheSalaCine().getListFuncionesPelicula().remove(f); f.getThePeliculaFuncion().getListFuncionesPelicula().remove(f); refrescar();
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION, "Se cancelará la función " + f.getId() + " y se reembolsará el 100% a todos los clientes con compras asociadas. ¿Continuar?", ButtonType.CANCEL, ButtonType.OK);
+        confirmacion.setHeaderText("Confirmar cancelación de función");
+        if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
+        double reembolsado = 0; int comprasCanceladas = 0;
+        for (Compra compra : Cine.getInstancia().getListCompras()) {
+            if (compra.getFuncion() == f && !compra.isCancelada()) {
+                reembolsado += compra.cancelarPorCancelacionFuncion(LocalDateTime.now());
+                comprasCanceladas++;
+            }
+        }
+        f.notificarObservadores("La función " + f + " fue cancelada por el cine. Se reembolsó el 100% de las compras.");
+        f.getTheSalaCine().getListFuncionesPelicula().remove(f); f.getThePeliculaFuncion().getListFuncionesPelicula().remove(f);
+        refrescar(); alerta("Función cancelada. Compras reembolsadas: " + comprasCanceladas + ". Total devuelto: " + moneda(reembolsado));
     }
 
     @FXML private void crearSala(ActionEvent e) {
@@ -230,6 +256,21 @@ public class GestionAdminViewController {
                 .append(" | ").append(c.getCuenta()==null?"—":c.getCuenta().getUsuario()).append(" | ")
                 .append(c.isCancelada()?"CANCELADA":"PAGADA").append(" | ").append(moneda(c.getValorPagado())).append('\n');
         return b.toString();
+    }
+
+    private String siguienteId(String prefijo, java.util.List<String> ids) {
+        int maximo = 0;
+        Pattern patron = Pattern.compile(Pattern.quote(prefijo) + "(\\d+)");
+        for (String id : ids) {
+            Matcher coincidencia = patron.matcher(id == null ? "" : id);
+            if (coincidencia.matches()) maximo = Math.max(maximo, Integer.parseInt(coincidencia.group(1)));
+        }
+        if ("PEL-".equals(prefijo)) maximo = Math.max(maximo, ultimoIdPelicula);
+        if ("FUN-".equals(prefijo)) maximo = Math.max(maximo, ultimoIdFuncion);
+        int siguiente = maximo + 1;
+        if ("PEL-".equals(prefijo)) ultimoIdPelicula = siguiente;
+        if ("FUN-".equals(prefijo)) ultimoIdFuncion = siguiente;
+        return prefijo + String.format(Locale.ROOT, "%03d", siguiente);
     }
 
     private String valor(TextField f) { return f.getText() == null ? "" : f.getText().trim(); }

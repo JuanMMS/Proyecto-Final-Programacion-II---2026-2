@@ -113,31 +113,42 @@ public class Compra implements Fachada {
      * @return monto devuelto a la tarjeta virtual
      */
     public double cancelar(LocalDateTime ahora) {
-        if (cancelada) {
-            throw new IllegalStateException("La compra ya fue cancelada y reembolsada");
-        }
-        if (cuenta == null || funcion == null) {
-            throw new IllegalStateException("La compra no tiene cuenta o funcion asociada");
-        }
-        if (!ahora.isBefore(funcion.getInicio())) {
-            throw new IllegalStateException("No se puede cancelar: la funcion ya inicio");
-        }
+        if (cancelada) throw new IllegalStateException("La compra ya fue cancelada y reembolsada");
+        if (cuenta == null || funcion == null) throw new IllegalStateException("La compra no tiene cuenta o funcion asociada");
+        if (!ahora.isBefore(funcion.getInicio())) throw new IllegalStateException("No se puede cancelar: la funcion ya inicio");
+        return cancelarConPorcentaje(seleccionarPolitica(ahora, funcion.getInicio()), ahora);
+    }
 
-        PoliticaReembolso politica = seleccionarPolitica(ahora, funcion.getInicio());
+    /** Cancelación administrativa de una función: reembolso completo sin importar la anticipación. */
+    public double cancelarPorCancelacionFuncion(LocalDateTime ahora) {
+        if (cuenta == null || funcion == null) throw new IllegalStateException("La compra no tiene cuenta o función asociada");
+        if (!cancelada) return cancelarConPorcentaje(REEMBOLSO_100, ahora);
+        if (porcentajeReembolso >= 100) return 0;
+        // Si el cliente había cancelado antes con reembolso parcial, el cine completa ahora el 100%.
+        double adicional = Math.max(0, getValorPagado() - montoReembolsado);
+        if (adicional > 0) {
+            TarjetaVirtual tarjeta = cuenta.getTheTarjetaVirtualCliente();
+            tarjeta.setSaldo(tarjeta.getSaldo() + adicional);
+            tarjeta.registrarMovimiento("Reembolso", "Complemento por cancelación de función " + funcion.getId(), adicional);
+        }
+        int puntosYaRestaurados = (int) Math.round(puntosRedimidos * porcentajeReembolso / 100.0);
+        int puntosAdicionales = puntosRedimidos - puntosYaRestaurados;
+        CuentaPuntos.acumular(cuenta, puntosAdicionales, ahora.toLocalDate(), "REST-FUN-" + id);
+        montoReembolsado += adicional;
+        porcentajeReembolso = 100;
+        return adicional;
+    }
+
+    private double cancelarConPorcentaje(PoliticaReembolso politica, LocalDateTime ahora) {
         double monto = politica.calcular(getValorPagado());
-
-        //Se marca primero para que un segundo intento nunca reembolse de nuevo
         cancelada = true;
         porcentajeReembolso = politica.getPorcentaje();
         montoReembolsado = monto;
-
         TarjetaVirtual tarjeta = cuenta.getTheTarjetaVirtualCliente();
         if (tarjeta != null && monto > 0) {
             tarjeta.setSaldo(tarjeta.getSaldo() + monto);
             tarjeta.registrarMovimiento("Reembolso", "Reembolso de compra " + id, monto);
         }
-
-        // Al cancelar se liberan los asientos para que puedan volver a venderse.
         if (funcion != null && theCompraCarrito != null) {
             for (composite.Elemento elemento : theCompraCarrito.getElementos()) {
                 if (elemento instanceof Entrada entrada) {
@@ -146,12 +157,9 @@ public class Compra implements Fachada {
                 }
             }
         }
-
-        //Los puntos ganados con esta compra se pierden y los redimidos se devuelven en el mismo porcentaje
         CuentaPuntos.revertir(cuenta, id);
         int restaurados = (int) Math.round(puntosRedimidos * politica.getPorcentaje() / 100.0);
         CuentaPuntos.acumular(cuenta, restaurados, ahora.toLocalDate(), "REST-" + id);
-
         return monto;
     }
 

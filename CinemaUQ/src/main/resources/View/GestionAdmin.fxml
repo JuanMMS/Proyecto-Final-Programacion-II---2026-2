@@ -38,10 +38,11 @@
                         <!-- Formulario Programar Función -->
                         <VBox spacing="10">
                             <Label text="Programar Función" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;"/>
-                            <ComboBox fx:id="cmbPelicula" promptText="Seleccionar película" maxWidth="Infinity" style="-fx-background-color: #2a2a35;"/>
-                            <ComboBox fx:id="cmbSala" promptText="Seleccionar sala" maxWidth="Infinity" style="-fx-background-color: #2a2a35;"/>
-                            <DatePicker fx:id="dpFechaFuncion" promptText="Fecha de la función" maxWidth="Infinity" style="-fx-background-color: #2a2a35;"/>
-                            <TextField fx:id="txtHoraFuncion" promptText="Hora (ej. 19:30)" style="-fx-background-color: #2a2a35; -fx-text-fill: white;"/>
+                            <ComboBox fx:id="cmbPelicula" promptText="Seleccionar película" maxWidth="Infinity" style="-fx-background-color: #2a2a35; -fx-text-fill: white;"/>
+                            <ComboBox fx:id="cmbSala" promptText="Seleccionar sala" maxWidth="Infinity" style="-fx-background-color: #2a2a35; -fx-text-fill: white;"/>
+                            <DatePicker fx:id="dpFechaFuncion" promptText="Fecha de la función" maxWidth="Infinity" style="-fx-background-color: #2a2a35; -fx-text-fill: white; -fx-control-inner-background: #2a2a35;"/>
+                            <Label text="La fecha y hora deben ser legibles; hora en formato 24 h (HH:mm)." style="-fx-text-fill: #c7c7d1;" wrapText="true"/>
+                            <TextField fx:id="txtHoraFuncion" promptText="Hora (ej. 19:30)" style="-fx-background-color: #2a2a35; -fx-text-fill: white; -fx-prompt-text-fill: #b8b8c5;"/>
                             <Button text="Programar Función" onAction="#programarFuncion" maxWidth="Infinity" style="-fx-background-color: #1a1a3a; -fx-border-color: #3f3f4e; -fx-text-fill: white;"/>
                         </VBox>
                     </VBox>

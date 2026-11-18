@@ -45,12 +45,13 @@
                 <VBox spacing="10.0" style="-fx-background-color: #14141d; -fx-padding: 15; -fx-background-radius: 8;">
                     <RadioButton fx:id="rbPuntos" text="Redimir Puntos CinemaUQ" toggleGroup="$grupoPago" style="-fx-text-fill: #f5b041; -fx-font-weight: bold;"/>
                     <Label fx:id="lblPuntosDisponibles" text="Puntos vigentes: 0 pts" styleClass="subtitle-text"/>
-                    <Label fx:id="lblCostoEnPuntos" text="Equivalencia requerida: 0 pts" styleClass="subtitle-text"/>
+                    <Label fx:id="lblCostoEnPuntos" text="Cada punto descuenta $10. Puedes combinar puntos y tarjeta." styleClass="subtitle-text" wrapText="true"/>
                 </VBox>
 
                 <Region VBox.vgrow="ALWAYS"/>
                 <Button fx:id="btnConfirmarPago" text="CONFIRMAR Y PAGAR" maxWidth="Infinity" styleClass="button-primary" onAction="#handleConfirmarPago"/>
                 <Button text="Cancelar y Volver" maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: #f44336;" onAction="#handleCancelar"/>
+                <Button text="Volver al menú principal" maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a8;" onAction="#handleMenuPrincipal"/>
             </VBox>
         </HBox>
     </center>
